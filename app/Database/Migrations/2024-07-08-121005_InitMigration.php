@@ -21,82 +21,59 @@ class InitMigration extends Migration
             $table->timestamps();
         });
 
-
-        Eloquent::schema()->create("wisata", function (Blueprint $table) {
+        // kategori
+        Eloquent::schema()->create("kategori", function (Blueprint $table) {
             $table->id();
             $table->string("kode")->unique();
             $table->string("nama");
-            $table->string("alamat");
+            $table->text("deskripsi")->nullable();
+            $table->timestamps();
+        });
+
+        Eloquent::schema()->create("produk", function (Blueprint $table) {
+            $table->id();
+            $table->string("kode")->unique();
+            $table->string("nama");
             $table->text("deskripsi")->nullable();
             $table->string("gambar")->nullable();
-            $table->string("latitude")->nullable();
-            $table->string("longitude")->nullable();
-            $table->string("klaster")->nullable();
+            $table->decimal("harga", 10, 2);
+            $table->integer("stok")->default(0);
+            $table->string("kategori_kode")->nullable();
+            $table->foreign("kategori_kode")
+                ->references("kode")
+                ->on("kategori")
+                ->onUpdate("cascade")
+                ->onDelete("set null");
             $table->timestamps();
         });
 
 
-        // kriteria_klasterisasi
-        Eloquent::schema()->create("kriteria_klasterisasi", function (Blueprint $table) {
+
+        // transaksi
+        Eloquent::schema()->create("transaksi", function (Blueprint $table) {
             $table->id();
-            $table->string("kode")->unique();
-            $table->string("nama");
-            $table->text("deskripsi")->nullable();
+            $table->foreignUuid("user_id")
+                ->constrained("users")
+                ->onUpdate("cascade")
+                ->onDelete("cascade");
+            $table->decimal("total_harga", 10, 2);
+            $table->string("status")->default("pending");
             $table->timestamps();
         });
 
-
-        // nilai_kriteria_klasterisasi
-        Eloquent::schema()->create("nilai_kriteria_klasterisasi", function (Blueprint
-        $table) {
+        // detail_transaksi
+        Eloquent::schema()->create("detail_transaksi", function (Blueprint $table) {
             $table->id();
-            $table->string("kriteria_klasterisasi_kode");
-            $table->foreign("kriteria_klasterisasi_kode")
-                ->references("kode")
-                ->on("kriteria_klasterisasi")
+            $table->foreignId("transaksi_id")
+                ->constrained("transaksi")
                 ->onUpdate("cascade")
                 ->onDelete("cascade");
-            $table->string("wisata_kode");
-            $table->foreign("wisata_kode")
-                ->references("kode")
-                ->on("wisata")
+            $table->foreignId("produk_id")
+                ->constrained("produk")
                 ->onUpdate("cascade")
                 ->onDelete("cascade");
-            $table->string("nilai");
-            $table->timestamps();
-        });
-
-
-        // kriteria_perengkingan
-        Eloquent::schema()->create("kriteria_perengkingan", function (Blueprint $table) {
-            $table->id();
-            $table->string("kode")->unique();
-            $table->string("nama");
-            // weight
-            $table->float("weight")->default(1);
-            // benefit or cost
-            $table->boolean("benefit")->default(true);
-            $table->text("deskripsi")->nullable();
-            $table->timestamps();
-        });
-
-        // nilai_kriteria_perengkingan
-        Eloquent::schema()->create("nilai_kriteria_perengkingan", function (Blueprint
-        $table) {
-            $table->id();
-            $table->string("kriteria_perengkingan_kode");
-            $table->foreign("kriteria_perengkingan_kode")
-                ->references("kode")
-                ->on("kriteria_perengkingan")
-                ->onUpdate("cascade")
-                ->onDelete("cascade");
-            $table->string("wisata_kode");
-            $table->foreign("wisata_kode")
-                ->references("kode")
-                ->on("wisata")
-                ->onUpdate("cascade")
-                ->onDelete("cascade");
-            $table->string("nilai");
+            $table->integer("jumlah")->default(1);
+            $table->decimal("harga", 10, 2);
             $table->timestamps();
         });
     }
@@ -104,10 +81,9 @@ class InitMigration extends Migration
     public function down()
     {
         Eloquent::schema()->dropIfExists('auth_jwt');
-        Eloquent::schema()->dropIfExists('kriteria_klasterisasi');
-        Eloquent::schema()->dropIfExists('nilai_kriteria_klasterisasi');
-        Eloquent::schema()->dropIfExists('kriteria_perengkingan');
-        Eloquent::schema()->dropIfExists('nilai_kriteria_perengkingan');
-        Eloquent::schema()->dropIfExists('wisata');
+        Eloquent::schema()->dropIfExists('kategori');
+        Eloquent::schema()->dropIfExists('produk');
+        Eloquent::schema()->dropIfExists('transaksi');
+        Eloquent::schema()->dropIfExists('detail_transaksi');
     }
 }

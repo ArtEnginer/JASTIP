@@ -109,4 +109,4 @@
 <script src="/js/tailwind.js"></script>
 
 
-<title>WISATA</title>
+<title>E-COMMERCE</title>

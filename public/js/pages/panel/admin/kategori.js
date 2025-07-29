@@ -1,8 +1,8 @@
 const table = {
-  kriteria_klasterisasi: $("#table-kriteria-klasterisasi").DataTable({
+  kategori: $("#table-kategori").DataTable({
     responsive: true,
     ajax: {
-      url: origin + "/api/kriteria-klasterisasi",
+      url: origin + "/api/kategori",
       dataSrc: "",
     },
     order: [
@@ -19,7 +19,7 @@ const table = {
       },
       { title: "Nama", data: "nama" },
       { title: "Kode", data: "kode" },
-
+      { title: "Deskripsi", data: "deskripsi" },
       {
         title: "Aksi",
         data: "id",
@@ -47,13 +47,13 @@ $("form#form-add").on("submit", function (e) {
 
   $.ajax({
     type: "POST",
-    url: origin + "/api/kriteria-klasterisasi",
+    url: origin + "/api/kategori",
     data: formData,
     contentType: false, // WAJIB agar FormData bekerja
     processData: false, // WAJIB agar FormData tidak diubah jadi query string
     success: (data) => {
       form.reset();
-      cloud.pull("kriteria-klasterisasi");
+      cloud.pull("kategori");
       if (data.messages) {
         $.each(data.messages, function (icon, text) {
           Toast.fire({
@@ -89,10 +89,10 @@ $("body").on("click", ".btn-action", function (e) {
         if (result.isConfirmed) {
           $.ajax({
             type: "DELETE",
-            url: origin + "/api/kriteria-klasterisasi/" + id,
+            url: origin + "/api/kategori/" + id,
             cache: false,
             success: (data) => {
-              table.kriteria_klasterisasi.ajax.reload();
+              table.kategori.ajax.reload();
               if (data.messages) {
                 $.each(data.messages, function (icon, text) {
                   Toast.fire({
@@ -107,7 +107,7 @@ $("body").on("click", ".btn-action", function (e) {
       });
       break;
     case "edit":
-      let dataEdit = cloud.get("kriteria-klasterisasi").find((x) => x.id == id);
+      let dataEdit = cloud.get("kategori").find((x) => x.id == id);
       console.log(dataEdit);
       $("form#form-edit")[0].reset();
       $("form#form-edit").find("input[name=id]").val(dataEdit.id);
@@ -140,12 +140,12 @@ $("form#form-edit").on("submit", function (e) {
 
   $.ajax({
     type: "POST",
-    url: origin + "/api/kriteria-klasterisasi/" + data.id,
+    url: origin + "/api/kategori/" + data.id,
     data: data,
     cache: false,
     success: (data) => {
       $(this)[0].reset();
-      cloud.pull("kriteria-klasterisasi");
+      cloud.pull("kategori");
       if (data.messages) {
         $.each(data.messages, function (icon, text) {
           Toast.fire({
@@ -173,12 +173,12 @@ $("body").on("keyup", "#form-edit input[name=nama]", function (e) {
 
 $(document).ready(function () {
   cloud
-    .add(origin + "/api/kriteria-klasterisasi", {
-      name: "kriteria-klasterisasi",
+    .add(origin + "/api/kategori", {
+      name: "kategori",
       callback: (data) => {
-        table.kriteria_klasterisasi.ajax.reload();
+        table.kategori.ajax.reload();
       },
     })
-    .then((kriteria_klasterisasi) => {});
+    .then((kategori) => {});
   $(".preloader").slideUp();
 });
