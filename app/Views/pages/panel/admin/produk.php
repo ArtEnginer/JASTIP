@@ -55,7 +55,7 @@
             <select name="kategori_kode" id="add-kategori_kode" required>
                 <option value="" disabled selected>Pilih Kategori</option>
                 <?php foreach ($kategori as $kat) : ?>
-                    <option value="<?= $kat->id ?>"><?= $kat->nama ?></option>
+                    <option value="<?= $kat->kode ?>"><?= $kat->nama ?></option>
                 <?php endforeach; ?>
             </select>
             <label for="add-kategori_kode">Kategori</label>
@@ -108,9 +108,9 @@
         </div>
         <div class="input-field col s12">
             <select name="kategori_kode" id="edit-kategori_kode" required>
-                <option value="" disabled selected>Pilih Kategori</option>
+                <option value="" disabled>Pilih Kategori</option>
                 <?php foreach ($kategori as $kat) : ?>
-                    <option value="<?= $kat->id ?>"><?= $kat->nama ?></option>
+                    <option value="<?= $kat->kode ?>"><?= $kat->nama ?></option>
                 <?php endforeach; ?>
             </select>
             <label for="edit-kategori_kode">Kategori</label>

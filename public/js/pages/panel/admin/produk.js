@@ -55,6 +55,8 @@ $("form#form-add").on("submit", function (e) {
     elements[i].readOnly = true;
   }
 
+  console.log(formData);
+
   $.ajax({
     type: "POST",
     url: origin + "/api/produk",
@@ -118,15 +120,35 @@ $("body").on("click", ".btn-action", function (e) {
       break;
     case "edit":
       let dataEdit = cloud.get("produk").find((x) => x.id == id);
-      console.log(dataEdit);
       $("form#form-edit")[0].reset();
       $("form#form-edit").find("input[name=id]").val(dataEdit.id);
+
+      // Isi semua field kecuali input file
       $.each(dataEdit, function (field, val) {
-        $("form#form-edit").find(`[name=${field}]`).val(val);
+        const input = $("form#form-edit").find(`[name=${field}]`);
+        if (input.is("select")) {
+          input.val(val).trigger("change");
+        } else if (!input.is('input[type="file"]')) {
+          input.val(val);
+        }
       });
+
+      // Tambahkan preview gambar yang sudah ada
+      if (dataEdit.gambar) {
+        const previewContainer = $(
+          '<div class="image-preview"><img src="' +
+            origin +
+            "/api/v2/source/storage/" +
+            dataEdit.gambar +
+            '" style="max-height: 150px; margin-bottom: 10px;"><p>Gambar saat ini</p></div>'
+        );
+        $("form#form-edit")
+          .find('input[name="gambar"]')
+          .before(previewContainer);
+      }
+
       M.updateTextFields();
       M.textareaAutoResize($("textarea"));
-      M.FormSelect.init(document.querySelectorAll("select"));
       break;
     default:
       break;
@@ -135,12 +157,7 @@ $("body").on("click", ".btn-action", function (e) {
 
 $("form#form-edit").on("submit", function (e) {
   e.preventDefault();
-  const data = {};
-  $(this)
-    .serializeArray()
-    .map(function (x) {
-      data[x.name] = x.value;
-    });
+  const formData = new FormData(this); // Gunakan FormData untuk menangani file juga
 
   const form = $(this)[0];
   const elements = form.elements;
@@ -150,9 +167,10 @@ $("form#form-edit").on("submit", function (e) {
 
   $.ajax({
     type: "POST",
-    url: origin + "/api/produk/" + data.id,
-    data: data,
-    cache: false,
+    url: origin + "/api/produk/" + $("input[name=id]", this).val(),
+    data: formData,
+    contentType: false,
+    processData: false,
     success: (data) => {
       $(this)[0].reset();
       cloud.pull("produk");
@@ -179,6 +197,11 @@ $("body").on("keyup", "#form-add input[name=nama]", function (e) {
 });
 $("body").on("keyup", "#form-edit input[name=nama]", function (e) {
   $("#form-edit input[name=name]").val($(this).val());
+});
+
+// Tambahkan event ketika popup ditutup
+$("body").on("click", ".btn-popup-close", function () {
+  $(".image-preview").remove(); // Hapus preview gambar
 });
 
 $(document).ready(function () {
