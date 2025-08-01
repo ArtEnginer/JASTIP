@@ -48,6 +48,22 @@ class Manage extends BaseController
         return $this->view->render("pages/panel/admin/kategori");
     }
 
+    public function transaksi(): string
+    {
+        $this->view->setData([
+            "page" => "transaksi",
+        ]);
+        return $this->view->render("pages/panel/admin/transaksi");
+    }
+
+    public function transaksiBarang(): string
+    {
+        $this->view->setData([
+            "page" => "transaksi-barang",
+        ]);
+        return $this->view->render("pages/panel/admin/transaksi-barang");
+    }
+
     public function user(): string
     {
         $this->view->setData([

@@ -1,8 +1,8 @@
 const table = {
-  produk: $("#table-produk").DataTable({
+  transaksi: $("#table-transaksi").DataTable({
     responsive: true,
     ajax: {
-      url: origin + "/api/produk",
+      url: origin + "/api/transaksi",
       dataSrc: "",
     },
     order: [
@@ -17,18 +17,13 @@ const table = {
           return meta.row + meta.settings._iDisplayStart + 1;
         },
       },
-      { title: "Nama", data: "nama" },
-      { title: "Kode", data: "kode" },
-      { title: "Harga", data: "harga", render: (data) => `Rp. ${data}` },
-      { title: "Stok", data: "stok" },
-      { title: "Kategori", data: "kategori.nama" },
-
+      { title: "User", data: "user.username" },
+      { title: "Total Harga", data: "total_harga" },
+      { title: "Status", data: "status" },
       {
-        title: "Gambar",
-        data: "gambar",
-        render: (data, type, row) => {
-          return `<img src="${origin}/api/v2/source/storage/${data}" class="responsive-img" style="max-height: 100px; max-width: 100px;" />`;
-        },
+        title: "Tanggal",
+        data: "created_at",
+        render: (data) => new Date(data).toLocaleDateString(),
       },
       {
         title: "Aksi",
@@ -59,13 +54,13 @@ $("form#form-add").on("submit", function (e) {
 
   $.ajax({
     type: "POST",
-    url: origin + "/api/produk",
+    url: origin + "/api/transaksi",
     data: formData,
     contentType: false, // WAJIB agar FormData bekerja
     processData: false, // WAJIB agar FormData tidak diubah jadi query string
     success: (data) => {
       form.reset();
-      cloud.pull("produk");
+      cloud.pull("transaksi");
       if (data.messages) {
         $.each(data.messages, function (icon, text) {
           Toast.fire({
@@ -101,10 +96,10 @@ $("body").on("click", ".btn-action", function (e) {
         if (result.isConfirmed) {
           $.ajax({
             type: "DELETE",
-            url: origin + "/api/produk/" + id,
+            url: origin + "/api/transaksi/" + id,
             cache: false,
             success: (data) => {
-              table.produk.ajax.reload();
+              table.transaksi.ajax.reload();
               if (data.messages) {
                 $.each(data.messages, function (icon, text) {
                   Toast.fire({
@@ -119,7 +114,7 @@ $("body").on("click", ".btn-action", function (e) {
       });
       break;
     case "edit":
-      let dataEdit = cloud.get("produk").find((x) => x.id == id);
+      let dataEdit = cloud.get("transaksi").find((x) => x.id == id);
       $("form#form-edit")[0].reset();
       $("form#form-edit").find("input[name=id]").val(dataEdit.id);
 
@@ -167,13 +162,13 @@ $("form#form-edit").on("submit", function (e) {
 
   $.ajax({
     type: "POST",
-    url: origin + "/api/produk/" + $("input[name=id]", this).val(),
+    url: origin + "/api/transaksi/" + $("input[name=id]", this).val(),
     data: formData,
     contentType: false,
     processData: false,
     success: (data) => {
       $(this)[0].reset();
-      cloud.pull("produk");
+      cloud.pull("transaksi");
       if (data.messages) {
         $.each(data.messages, function (icon, text) {
           Toast.fire({
@@ -206,13 +201,21 @@ $("body").on("click", ".btn-popup-close", function () {
 
 $(document).ready(function () {
   cloud
-    .add(origin + "/api/produk", {
-      name: "produk",
+    .add(origin + "/api/transaksi", {
+      name: "transaksi",
       callback: (data) => {
-        table.produk.ajax.reload();
+        table.transaksi.ajax.reload();
       },
     })
-    .then((produk) => {});
-
+    .then((transaksi) => {});
+  cloud
+    .add(origin + "/api/kategori", {
+      name: "kategori",
+      callback: (data) => {
+        M.FormSelect.init(document.querySelectorAll("select"));
+        table.transaksi.ajax.reload();
+      },
+    })
+    .then((transaksi) => {});
   $(".preloader").slideUp();
 });

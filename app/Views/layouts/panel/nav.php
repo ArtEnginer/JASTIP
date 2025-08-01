@@ -8,6 +8,11 @@
     <div class="nav-item" data-page="dashboard">
         <a href="<?= base_url('panel') ?>" class="nav-link"><i class="material-icons">dashboard</i>Dashboard</a>
     </div>
+    <!-- halaman untuk transaksi barang -->
+    <div class="nav-item" data-page="transaksi-barang">
+        <a href="<?= base_url('panel/transaksi-barang') ?>" class="nav-link"><i class="material-icons">shopping_cart</i>Transaksi
+            Barang</a>
+    </div>
     <?php if (auth()->user()->inGroup('admin')) : ?>
         <div class="nav-item" data-page="produk">
             <a href="<?= base_url('panel/produk') ?>" class="nav-link"><i class="material-icons">

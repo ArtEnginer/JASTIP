@@ -284,15 +284,14 @@ $.ajaxSetup({
     });
   },
   success: function (response, status, xhr) {
-    let messages = JSON.parse(xhr.responseText).messages;
-    if (typeof messages == "object") {
-      messages = Object.values(messages);
+    if (response.messages) {
+      $.each(response.messages, function (icon, text) {
+        Toast.fire({
+          icon: icon,
+          title: text,
+        });
+      });
     }
-    console.log(messages);
-    Toast.fire({
-      icon: "error",
-      title: messages,
-    });
   },
 });
 

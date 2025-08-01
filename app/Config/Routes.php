@@ -2,6 +2,7 @@
 
 use App\Controllers\Api\KategoriController;
 use App\Controllers\Api\ProdukController;
+use App\Controllers\Api\TransaksiController;
 use App\Controllers\Api\UserController;
 use App\Controllers\Frontend\Manage;
 use App\Controllers\Migrate;
@@ -25,6 +26,8 @@ $routes->environment('development', static function ($routes) {
 $routes->group('panel', static function (RouteCollection $routes) {
     $routes->get('', [Manage::class, 'index']);
     $routes->get('dashboard', [Manage::class, 'dashboard']);
+    // halaman untuk transaksi barang
+    $routes->get('transaksi-barang', [Manage::class, 'transaksiBarang']);
     $routes->get('produk', [Manage::class, 'produk']);
     $routes->get('kategori', [Manage::class, 'kategori']);
     $routes->get('transaksi', [Manage::class, 'transaksi']);
@@ -40,6 +43,8 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
 
     $routes->resource('produk', ['namespace' => '', 'controller' => ProdukController::class, 'websafe' => 1]);
     $routes->resource('kategori', ['namespace' => '', 'controller' => KategoriController::class, 'websafe' => 1]);
+    $routes->resource('transaksi', ['namespace' => '', 'controller' => TransaksiController::class, 'websafe' => 1]);
+
 
     $routes->post('user/activate', [UserController::class, 'activate']);
     $routes->post('user/deactivate', [UserController::class, 'deactivate']);
