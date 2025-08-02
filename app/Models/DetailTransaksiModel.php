@@ -12,7 +12,9 @@ class DetailTransaksiModel extends Model
         "transaksi_id",
         "produk_id",
         "jumlah",
-        "harga"
+        "harga",
+        "created_at",
+        "updated_at"
     ];
 
     public function transaksi()

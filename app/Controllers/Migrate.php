@@ -45,7 +45,6 @@ class Migrate extends BaseController
             }
 
             $migrate->setNamespace('CodeIgniter\Settings')->latest();
-            // $migrate->setNamespace('Mrfrost\GoogleApi')->latest();
             // $migrate->setNamespace('CodeIgniter\Shield')->latest();
             $migrate->setNamespace('App')->latest();
 

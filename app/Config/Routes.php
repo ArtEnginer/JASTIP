@@ -43,6 +43,8 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
 
     $routes->resource('produk', ['namespace' => '', 'controller' => ProdukController::class, 'websafe' => 1]);
     $routes->resource('kategori', ['namespace' => '', 'controller' => KategoriController::class, 'websafe' => 1]);
+    // tambah tansaksi barang
+    $routes->post('transaksi/save', [TransaksiController::class, 'saveTransaksi']);
     $routes->resource('transaksi', ['namespace' => '', 'controller' => TransaksiController::class, 'websafe' => 1]);
 
 

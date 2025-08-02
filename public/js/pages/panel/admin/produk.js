@@ -212,7 +212,9 @@ $(document).ready(function () {
         table.produk.ajax.reload();
       },
     })
-    .then((produk) => {});
+    .then((produk) => {
+      console.log("Produk data loaded", produk);
+    });
 
   $(".preloader").slideUp();
 });

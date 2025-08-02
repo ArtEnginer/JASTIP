@@ -11,8 +11,16 @@ class TransaksiModel extends Model
         "id",
         "user_id",
         "total_harga",
-        "status"
+        "status",
+        "nama_penerima",
+        "alamat_pengiriman",
+        "email_penerima",
+        'nomor_telepon_penerima',
+        "created_at",
+        "updated_at"
+
     ];
+
 
     public function user()
     {

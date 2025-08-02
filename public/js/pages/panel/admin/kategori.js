@@ -179,6 +179,8 @@ $(document).ready(function () {
         table.kategori.ajax.reload();
       },
     })
-    .then((kategori) => {});
+    .then((kategori) => {
+      console.log("Kategori data loaded", kategori);
+    });
   $(".preloader").slideUp();
 });

@@ -18,8 +18,35 @@ const table = {
         },
       },
       { title: "User", data: "user.username" },
-      { title: "Total Harga", data: "total_harga" },
-      { title: "Status", data: "status" },
+      {
+        title: "Total Harga",
+        data: "total_harga",
+        render: (data) => {
+          return new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR",
+          }).format(data);
+        },
+      },
+      {
+        title: "Status",
+        data: "status",
+        render: (data) => {
+          switch (data) {
+            case "pending":
+              return `<span class="badge orange darken-2">${data}</span>`;
+            case "completed":
+              return `<span class="badge green">${data}</span>`;
+            case "canceled":
+              return `<span class="badge red">${data}</span>`;
+            default:
+              return `<span class="badge grey">${data}</span>`;
+          }
+        },
+      },
+      { title: "Nama Penerima", data: "nama_penerima" },
+      { title: "Alamat Pengiriman", data: "alamat_penerima" },
+      { title: "Email Penerima", data: "email_penerima" },
       {
         title: "Tanggal",
         data: "created_at",

@@ -56,8 +56,13 @@ class InitMigration extends Migration
                 ->constrained("users")
                 ->onUpdate("cascade")
                 ->onDelete("cascade");
-            $table->decimal("total_harga", 10, 2);
+            $table->string("total_harga")->nullable();
             $table->string("status")->default("pending");
+            $table->string("nama_penerima")->nullable();
+            $table->string("alamat_penerima")->nullable();
+            $table->string("email_penerima")->nullable();
+            $table->string("nomor_telepon_penerima")->nullable();
+
             $table->timestamps();
         });
 
