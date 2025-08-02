@@ -34,13 +34,17 @@ const table = {
         render: (data) => {
           switch (data) {
             case "pending":
-              return `<span class="badge orange darken-2">${data}</span>`;
-            case "completed":
-              return `<span class="badge green">${data}</span>`;
-            case "canceled":
-              return `<span class="badge red">${data}</span>`;
+              return `<span class="pl-2 pr-2 rounded text-white orange darken-2" >${data}</span>`;
+            case "dikemas":
+              return `<span class="pl-2 pr-2 rounded text-white green" >${data}</span>`;
+            case "dikirim":
+              return `<span class="pl-2 pr-2 rounded text-white red" >${data}</span>`;
+            case "selesai":
+              return `<span class="pl-2 pr-2 rounded text-white blue" >${data}</span>`;
+            case "dibatalkan":
+              return `<span class="pl-2 pr-2 rounded text-white grey darken-2" >${data}</span>`;
             default:
-              return `<span class="badge grey">${data}</span>`;
+              return `<span class="pl-2 pr-2 rounded text-white grey">${data}</span>`;
           }
         },
       },
@@ -57,37 +61,49 @@ const table = {
         data: "id",
         render: (data, type, row) => {
           return `<div class="table-control">
-          <a role="button" class="btn waves-effect waves-light btn-action btn-popup orange darken-2" data-target="edit" data-action="edit" data-id="${data}"><i class="material-icons">edit</i></a>
-          <a role="button" class="btn waves-effect waves-light btn-action red" data-action="delete" data-id="${data}"><i class="material-icons">delete</i></a>
-          </div>`;
+            <a role="button" class="btn waves-effect waves-light btn-action blue" data-action="view" data-id="${data}">
+                <i class="material-icons">visibility</i>
+            </a>
+            <a role="button" class="btn waves-effect waves-light btn-action orange darken-2" data-action="edit-status" data-id="${data}">
+                <i class="material-icons">swap_vert</i>
+            </a>
+            <a role="button" class="btn waves-effect waves-light btn-action red" data-action="delete" data-id="${data}">
+                <i class="material-icons">delete</i>
+            </a>
+        </div>`;
         },
       },
     ],
   }),
 };
 
-$("form#form-add").on("submit", function (e) {
+const modalEditStatus = M.Modal.init(
+  document.querySelector("#modal-edit-status")
+);
+
+$("body").on("click", ".btn-action[data-action='edit-status']", function (e) {
   e.preventDefault();
+  const id = $(this).data("id");
+  const transaksi = cloud.get("transaksi").find((x) => x.id == id);
+  $("form#form-edit-status input[name=id]").val(transaksi.id);
+  $("form#form-edit-status select[name=status]").val(transaksi.status);
+  M.FormSelect.init($("form#form-edit-status select"));
+  modalEditStatus.open();
+});
 
-  const form = this;
-  const formData = new FormData(form); // Ini akan otomatis menangkap file juga
-
-  const elements = form.elements;
-  for (let i = 0, len = elements.length; i < len; ++i) {
-    elements[i].readOnly = true;
-  }
-
-  console.log(formData);
-
+$("form#form-edit-status").on("submit", function (e) {
+  e.preventDefault();
+  const form = $(this);
+  const id = form.find("input[name=id]").val();
+  const status = form.find("select[name=status]").val();
+  console.log("Updating status for ID:", id, "to status:", status);
   $.ajax({
     type: "POST",
-    url: origin + "/api/transaksi",
-    data: formData,
-    contentType: false, // WAJIB agar FormData bekerja
-    processData: false, // WAJIB agar FormData tidak diubah jadi query string
+    url: origin + "/api/transaksi/update-status",
+    data: { id: id, status: status },
     success: (data) => {
-      form.reset();
-      cloud.pull("transaksi");
+      modalEditStatus.close();
+      table.transaksi.ajax.reload();
       if (data.messages) {
         $.each(data.messages, function (icon, text) {
           Toast.fire({
@@ -96,14 +112,36 @@ $("form#form-add").on("submit", function (e) {
           });
         });
       }
+      cloud.pull("transaksi");
     },
-    complete: () => {
-      for (let i = 0, len = elements.length; i < len; ++i) {
-        elements[i].readOnly = false;
-      }
+    error: (xhr) => {
+      Toast.fire({
+        icon: "error",
+        title: xhr.responseJSON?.messages?.error || "Gagal mengupdate status",
+      });
     },
   });
 });
+
+// Initialize the modal with proper options
+const modalDetailTransaksi = M.Modal.init(
+  document.querySelector("#modal-detail-transaksi"),
+  {
+    onCloseEnd: () => {
+      $("#detail-produk-list").empty();
+    },
+  }
+);
+
+// Add this event listener for the close button
+$("body").on(
+  "click",
+  "#modal-detail-transaksi .btn-popup-close, #modal-detail-transaksi .modal-close",
+  function (e) {
+    e.preventDefault();
+    modalDetailTransaksi.close();
+  }
+);
 
 $("body").on("click", ".btn-action", function (e) {
   e.preventDefault();
@@ -145,7 +183,6 @@ $("body").on("click", ".btn-action", function (e) {
       $("form#form-edit")[0].reset();
       $("form#form-edit").find("input[name=id]").val(dataEdit.id);
 
-      // Isi semua field kecuali input file
       $.each(dataEdit, function (field, val) {
         const input = $("form#form-edit").find(`[name=${field}]`);
         if (input.is("select")) {
@@ -155,7 +192,6 @@ $("body").on("click", ".btn-action", function (e) {
         }
       });
 
-      // Tambahkan preview gambar yang sudah ada
       if (dataEdit.gambar) {
         const previewContainer = $(
           '<div class="image-preview"><img src="' +
@@ -172,6 +208,79 @@ $("body").on("click", ".btn-action", function (e) {
       M.updateTextFields();
       M.textareaAutoResize($("textarea"));
       break;
+    // In your switch case for button actions, add:
+    case "view":
+      const transaksi = cloud.get("transaksi").find((x) => x.id == id);
+      const detailTransaksi = cloud
+        .get("detailTransaksi")
+        .filter((x) => x.transaksi_id == id);
+
+      // Set basic info
+      $("#detail-transaksi-id").text(transaksi.id);
+      $("#detail-nama-penerima").text(transaksi.nama_penerima);
+      $("#detail-alamat").text(transaksi.alamat_penerima);
+      $("#detail-email").text(transaksi.email_penerima);
+      $("#detail-telepon").text(transaksi.nomor_telepon_penerima);
+      $("#detail-total-harga").text(
+        new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+        }).format(transaksi.total_harga)
+      );
+      $("#detail-tanggal").text(
+        new Date(transaksi.created_at).toLocaleString()
+      );
+
+      // Set status with appropriate color
+      const statusElement = $("#detail-status");
+      statusElement.text(transaksi.status);
+      statusElement.removeClass().addClass("pl-2 pr-2 rounded text-white");
+
+      switch (transaksi.status) {
+        case "pending":
+          statusElement.addClass("orange darken-2");
+          break;
+        case "dikemas":
+          statusElement.addClass("green");
+          break;
+        case "dikirim":
+          statusElement.addClass("red");
+          break;
+        case "selesai":
+          statusElement.addClass("blue");
+          break;
+        case "dibatalkan":
+          statusElement.addClass("grey darken-2");
+          break;
+        default:
+          statusElement.addClass("grey");
+      }
+
+      // Populate products list
+      const produkList = $("#detail-produk-list");
+      produkList.empty();
+
+      detailTransaksi.forEach((item, index) => {
+        const subtotal = item.jumlah * parseFloat(item.harga);
+        produkList.append(`
+            <tr>
+                <td>${index + 1}</td>
+                <td>${item.produk.nama}</td>
+                <td>${new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                }).format(item.harga)}</td>
+                <td>${item.jumlah}</td>
+                <td>${new Intl.NumberFormat("id-ID", {
+                  style: "currency",
+                  currency: "IDR",
+                }).format(subtotal)}</td>
+            </tr>
+        `);
+      });
+
+      modalDetailTransaksi.open();
+      break;
     default:
       break;
   }
@@ -179,7 +288,7 @@ $("body").on("click", ".btn-action", function (e) {
 
 $("form#form-edit").on("submit", function (e) {
   e.preventDefault();
-  const formData = new FormData(this); // Gunakan FormData untuk menangani file juga
+  const formData = new FormData(this);
 
   const form = $(this)[0];
   const elements = form.elements;
@@ -221,9 +330,8 @@ $("body").on("keyup", "#form-edit input[name=nama]", function (e) {
   $("#form-edit input[name=name]").val($(this).val());
 });
 
-// Tambahkan event ketika popup ditutup
 $("body").on("click", ".btn-popup-close", function () {
-  $(".image-preview").remove(); // Hapus preview gambar
+  $(".image-preview").remove();
 });
 
 $(document).ready(function () {
@@ -234,7 +342,17 @@ $(document).ready(function () {
         table.transaksi.ajax.reload();
       },
     })
-    .then((transaksi) => {});
+    .then((transaksi) => {
+      console.log("Transaksi data loaded:", transaksi);
+    });
+  cloud
+    .add(origin + "/api/detail-transaksi", {
+      name: "detailTransaksi",
+      callback: (data) => {},
+    })
+    .then((detailTransaksi) => {
+      console.log("Detail Transaksi data loaded:", detailTransaksi);
+    });
   cloud
     .add(origin + "/api/kategori", {
       name: "kategori",
@@ -244,5 +362,6 @@ $(document).ready(function () {
       },
     })
     .then((transaksi) => {});
+
   $(".preloader").slideUp();
 });

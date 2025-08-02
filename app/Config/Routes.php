@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\Api\DetailTransaksiController;
 use App\Controllers\Api\KategoriController;
 use App\Controllers\Api\ProdukController;
 use App\Controllers\Api\TransaksiController;
@@ -43,9 +44,11 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
 
     $routes->resource('produk', ['namespace' => '', 'controller' => ProdukController::class, 'websafe' => 1]);
     $routes->resource('kategori', ['namespace' => '', 'controller' => KategoriController::class, 'websafe' => 1]);
-    // tambah tansaksi barang
+
     $routes->post('transaksi/save', [TransaksiController::class, 'saveTransaksi']);
+    $routes->post('transaksi/update-status', [TransaksiController::class, 'updateStatus']);
     $routes->resource('transaksi', ['namespace' => '', 'controller' => TransaksiController::class, 'websafe' => 1]);
+    $routes->resource('detail-transaksi', ['namespace' => '', 'controller' => DetailTransaksiController::class, 'websafe' => 1]);
 
 
     $routes->post('user/activate', [UserController::class, 'activate']);

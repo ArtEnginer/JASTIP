@@ -14,26 +14,20 @@ class TransaksiController extends BaseApi
 
     public function saveTransaksi()
     {
-
         $data = $this->request->getJSON(true);
-
         $user_id = auth()->user()->id;
         $dataTransaksi['user_id'] = $user_id;
-        $dataTransaksi['status'] = 'pending'; // Set default status to pending
+        $dataTransaksi['status'] = 'pending';
         $dataTransaksi['total_harga'] = $data['total'] ?? null;
         $dataTransaksi['nama_penerima'] = $data['customerName'] ?? null;
         $dataTransaksi['alamat_penerima'] = $data['shippingAddress'] ?? null;
         $dataTransaksi['email_penerima'] = $data['customerEmail'] ?? null;
         $dataTransaksi['nomor_telepon_penerima'] = $data['customerPhone'] ?? null;
-
-        // created_at and updated_at will be handled by Eloquent automatically
         $dataTransaksi['created_at'] = Date('Y-m-d H:i:s');
         $dataTransaksi['updated_at'] = Date('Y-m-d H:i:s');
 
-        // Mengambil ID transaksi yang baru dibuat
         $transaksiId = TransaksiModel::insertGetId($dataTransaksi);
 
-        // Menyimpan items ke detail transaksi
         foreach ($data['items'] as $item) {
             $itemData = [
                 'transaksi_id' => $transaksiId,
@@ -43,7 +37,7 @@ class TransaksiController extends BaseApi
             ];
             DetailTransaksiModel::insert($itemData);
         }
-        // Mengurangi stok produk
+
         foreach ($data['items'] as $item) {
             $produk = ProdukModel::find($item['productId']);
             if ($produk) {
@@ -55,5 +49,28 @@ class TransaksiController extends BaseApi
             'message' => 'Transaksi berhasil dibuat',
             'transaksi_id' => $transaksiId,
         ]);
+    }
+
+    public function updateStatus()
+    {
+
+        $data = $this->request->getPost();
+        $transaksi = TransaksiModel::find($data['id']);
+        if (!$transaksi) {
+            return $this->failNotFound('Transaksi tidak ditemukan');
+        }
+        $status = $data['status'] ?? null;
+        if (!$status) {
+            return $this->failValidationError('Status tidak boleh kosong');
+        }
+        $transaksi->status = $status;
+        $transaksi->updated_at = date('Y-m-d H:i:s');
+        if ($transaksi->save()) {
+            return $this->respond([
+                'message' => 'Status transaksi berhasil diperbarui',
+                'transaksi' => $transaksi,
+            ]);
+        }
+        return $this->fail('Gagal memperbarui status transaksi');
     }
 }
