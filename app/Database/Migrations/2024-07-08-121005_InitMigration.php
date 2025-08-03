@@ -56,6 +56,8 @@ class InitMigration extends Migration
                 ->constrained("users")
                 ->onUpdate("cascade")
                 ->onDelete("cascade");
+            // order_id
+            $table->string("order_id")->unique();
             $table->string("total_harga")->nullable();
             $table->string("status")->default("pending");
             $table->string("nama_penerima")->nullable();

@@ -17,7 +17,6 @@ use App\Controllers\Home;
 $routes->get('/', 'Home::index');
 $routes->addPlaceholder('uuid', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
 
-service('auth')->routes($routes);
 
 $routes->environment('development', static function ($routes) {
     $routes->get('migrate', [Migrate::class, 'index']);
@@ -37,8 +36,9 @@ $routes->group('panel', static function (RouteCollection $routes) {
 });
 
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($routes) {
-    $routes->post('register', [Home::class, 'register']);
     $routes->group('v2', ['namespace' => 'App\Controllers\Api'], static function ($routes) {
+        $routes->post('register', [Home::class, 'register']);
+        $routes->get('produk', 'ProdukController::index');
         $routes->get('source/storage/(:any)', 'SourceController::storage/$1');
     });
 
@@ -51,8 +51,14 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
     $routes->resource('detail-transaksi', ['namespace' => '', 'controller' => DetailTransaksiController::class, 'websafe' => 1]);
 
 
+    // midtrans / token
+    $routes->post('midtrans/token', [TransaksiController::class, 'midtransToken']);
+    $routes->post('midtrans/notification', [TransaksiController::class, 'midtransNotification']);
     $routes->post('user/activate', [UserController::class, 'activate']);
     $routes->post('user/deactivate', [UserController::class, 'deactivate']);
     $routes->post('user/update/(:uuid)', [UserController::class, 'update']);
     $routes->resource('user', ['namespace' => '', 'controller' => UserController::class]);
 });
+
+
+service('auth')->routes($routes);

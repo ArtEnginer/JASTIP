@@ -67,8 +67,8 @@
             </div>
             <div class="row">
                 <div class="col s12 right-align">
-                    <button type="button" class="btn waves-effect waves-light btn-popup-close">Batal</button>
-                    <button type="submit" class="btn waves-effect waves-light">Simpan</button>
+                    <button type="button" class="btn waves-effect waves-light yellow btn-popup-close">Batal</button>
+                    <button type="submit" class="btn waves-effect green waves-light">Simpan</button>
                 </div>
             </div>
         </form>

@@ -51,10 +51,7 @@ class PenggunaModel extends Model
         return $this->hasMany(AuthGroupUser::class, 'user_id', 'id');
     }
 
-    public function institution(): HasOne
-    {
-        return $this->hasOne(Institution::class, 'user_id');
-    }
+
 
     public function setEmailIdentity(array $identities): self
     {

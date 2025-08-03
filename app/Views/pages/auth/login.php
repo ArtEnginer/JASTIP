@@ -31,6 +31,7 @@
     <button type="submit" class="btn waves-effect waves-light btn-auth">
         Masuk
     </button>
+    <p class="center">Belum punya akun ? <a class="blue-text" href="<?= base_url('register') ?>">Daftar</a></p>
     </form>
 </div>
 </div>

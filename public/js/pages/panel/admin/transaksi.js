@@ -17,6 +17,13 @@ const table = {
           return meta.row + meta.settings._iDisplayStart + 1;
         },
       },
+      {
+        title: "Kode Transaksi",
+        data: "order_id",
+        render: (data, type, row) => {
+          return `<a href="#" class="btn-action" data-action="view" data-id="${row.id}">${data}</a>`;
+        },
+      },
       { title: "User", data: "user.username" },
       {
         title: "Total Harga",
@@ -78,7 +85,12 @@ const table = {
 };
 
 const modalEditStatus = M.Modal.init(
-  document.querySelector("#modal-edit-status")
+  document.querySelector("#modal-edit-status"),
+  {
+    onCloseEnd: () => {
+      $("#detail-produk-list").empty();
+    },
+  }
 );
 
 $("body").on("click", ".btn-action[data-action='edit-status']", function (e) {
@@ -134,14 +146,11 @@ const modalDetailTransaksi = M.Modal.init(
 );
 
 // Add this event listener for the close button
-$("body").on(
-  "click",
-  "#modal-detail-transaksi .btn-popup-close, #modal-detail-transaksi .modal-close",
-  function (e) {
-    e.preventDefault();
-    modalDetailTransaksi.close();
-  }
-);
+$("body").on("click", ".btn-popup-close", function (e) {
+  e.preventDefault();
+  modalDetailTransaksi.close();
+  modalEditStatus.close();
+});
 
 $("body").on("click", ".btn-action", function (e) {
   e.preventDefault();
@@ -216,7 +225,7 @@ $("body").on("click", ".btn-action", function (e) {
         .filter((x) => x.transaksi_id == id);
 
       // Set basic info
-      $("#detail-transaksi-id").text(transaksi.id);
+      $("#detail-transaksi-id").text(transaksi.order_id);
       $("#detail-nama-penerima").text(transaksi.nama_penerima);
       $("#detail-alamat").text(transaksi.alamat_penerima);
       $("#detail-email").text(transaksi.email_penerima);

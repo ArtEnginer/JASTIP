@@ -19,6 +19,7 @@
         "firebase/php-jwt": "^6.10",
         "illuminate/database": "^11.15",
         "illuminate/events": "^11.15",
+        "midtrans/midtrans-php": "^2.6",
         "php-ai/php-ml": "^0.10.0",
         "phpoffice/phpspreadsheet": "^2.1",
         "ramsey/uuid": "^4.7"

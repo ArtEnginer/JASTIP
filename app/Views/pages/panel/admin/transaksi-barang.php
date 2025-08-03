@@ -1,5 +1,11 @@
 <?= $this->extend('layouts/panel/main') ?>
 <?= $this->section('main') ?>
+<!-- Midtrans SDK -->
+<script
+    type="text/javascript"
+    src="https://app.sandbox.midtrans.com/snap/snap.js"
+    data-client-key="SB-Mid-client-U4g1AdoP3Ny_Oxuh">
+</script>
 <style>
     /* Main Styles */
     .ecommerce-container {
@@ -457,14 +463,14 @@
                             <h5 id="subtotal-amount">Rp 0</h5>
                         </div>
                     </div>
-                    <div class="row" style="margin-bottom: 0;">
+                    <!-- <div class="row" style="margin-bottom: 0;">
                         <div class="col s6">
                             <h5>Ongkos Kirim</h5>
                         </div>
                         <div class="col s6 right-align">
                             <h5 id="shipping-cost">Rp 0</h5>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="divider"></div>
                     <div class="row" style="margin-bottom: 0;">
                         <div class="col s6">
@@ -558,6 +564,7 @@
                                     <div class="divider" style="margin: 15px 0;"></div>
 
                                     <h5 class="card-title">Metode Pembayaran</h5>
+                                    <!-- In your checkout modal, replace the payment-methods section with this: -->
                                     <div class="payment-methods">
                                         <div class="payment-option">
                                             <label>
@@ -566,9 +573,7 @@
                                             </label>
                                             <div class="payment-details" id="transfer-details">
                                                 <p style="margin: 5px 0 0 25px; font-size: 13px;">
-                                                    <strong>Bank ABC</strong><br>
-                                                    No. Rek: 1234567890<br>
-                                                    A.n: Toko Online Kami
+                                                    Pembayaran melalui transfer bank akan diverifikasi otomatis
                                                 </p>
                                             </div>
                                         </div>
@@ -587,22 +592,23 @@
 
                                         <div class="payment-option">
                                             <label>
-                                                <input name="payment-method" type="radio" value="e-wallet" />
-                                                <span>E-Wallet</span>
+                                                <input name="payment-method" type="radio" value="midtrans" />
+                                                <span>Pembayaran Digital (Midtrans)</span>
                                             </label>
-                                            <div class="payment-details" id="ewallet-details" style="display: none;">
-                                                <div style="margin: 5px 0 0 25px;">
-                                                    <select class="browser-default" style="font-size: 13px;">
-                                                        <option value="" disabled selected>Pilih E-Wallet</option>
+                                            <div class="payment-details" id="midtrans-details" style="display: none;">
+                                                <div style="margin: 5px 0 0 25px; font-size: 13px;">
+                                                    <p>Pilih metode pembayaran digital:</p>
+                                                    <select class="browser-default" id="midtrans-method" style="font-size: 13px;">
                                                         <option value="gopay">GoPay</option>
-                                                        <option value="ovo">OVO</option>
-                                                        <option value="dana">DANA</option>
+                                                        <option value="shopeepay">ShopeePay</option>
+                                                        <option value="qris">QRIS</option>
+                                                        <option value="bank_transfer">Transfer Bank</option>
+                                                        <option value="credit_card">Kartu Kredit</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="divider" style="margin: 15px 0;"></div>
 
                                     <div class="order-total">

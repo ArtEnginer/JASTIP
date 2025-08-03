@@ -13,5 +13,4 @@
 <script type="text/javascript" src="/js/moment.min.js"></script>
 <script type="text/javascript" src="/js/fancybox.umd.js"></script>
 
-
 <script src="/js/main.js?timestamp=<?= time() ?>"></script>

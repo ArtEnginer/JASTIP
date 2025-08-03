@@ -9,6 +9,7 @@ class TransaksiModel extends Model
     protected $table = 'transaksi';
     protected $fillable = [
         "id",
+        "order_id",
         "user_id",
         "total_harga",
         "status",

@@ -508,12 +508,12 @@ $(document).ready(function () {
     });
 
     // Hitung ongkos kirim dan total
-    const shippingCost = 15000; // Contoh flat rate
+    const shippingCost = 0; // Contoh flat rate
     const total = subtotal + shippingCost;
 
     // Update ringkasan keranjang
     $("#subtotal-amount").text(`Rp ${formatCurrency(subtotal)}`);
-    $("#shipping-cost").text(`Rp ${formatCurrency(shippingCost)}`);
+    // $("#shipping-cost").text(`Rp ${formatCurrency(shippingCost)}`);
     $("#total-amount").text(`Rp ${formatCurrency(total)}`);
   }
 
@@ -841,8 +841,7 @@ $(document).ready(function () {
     // Update totals
     $("#checkout-total").text(`Rp ${formatCurrency(total)}`);
   }
-
-  // Checkout form submission
+  // Update your checkout form submission
   $("#checkout-form").submit(function (e) {
     e.preventDefault();
 
@@ -851,22 +850,13 @@ $(document).ready(function () {
     const email = $("#customer-email").val().trim();
     const phone = $("#customer-phone").val().trim();
     const address = $("#shipping-address").val().trim();
-    const province = $("#shipping-province").val();
-    const city = $("#shipping-city").val();
-    const shippingMethod = $("#shipping-method").val();
+    const notes = $("#order-notes").val().trim();
+
     const paymentMethod = $('input[name="payment-method"]:checked').val();
+    const midtransMethod = $("#midtrans-method").val();
     const agreeTerms = $("#agree-terms").is(":checked");
 
-    if (
-      !name ||
-      !email ||
-      !phone ||
-      !address ||
-      !province ||
-      !city ||
-      !shippingMethod ||
-      !paymentMethod
-    ) {
+    if (!name || !email || !phone || !address || !paymentMethod) {
       showToast("Harap lengkapi semua field yang wajib diisi", "red");
       return;
     }
@@ -881,68 +871,182 @@ $(document).ready(function () {
       return;
     }
 
+    // Calculate totals
+    const subtotal = cart.reduce((sum, item) => {
+      const price = item.product.discountedPrice || item.product.price;
+      return sum + price * item.quantity;
+    }, 0);
+
+    // Add shipping cost (COD has additional fee)
+    const shippingCost = paymentMethod === "cod" ? 10000 : 0;
+    const total = subtotal + shippingCost;
+
+    // Generate order number
+    const orderNumber = "ORD-" + Date.now().toString(36).toUpperCase();
+
+    // Prepare order data
+    const orderData = {
+      orderNumber: orderNumber,
+      customerName: name,
+      customerEmail: email,
+      customerPhone: phone,
+      shippingAddress: address,
+      notes: notes,
+      paymentMethod: paymentMethod,
+      midtransMethod: midtransMethod,
+      items: cart.map((item) => ({
+        productId: item.product.id,
+        productName: item.product.name,
+        quantity: item.quantity,
+        price: item.product.discountedPrice || item.product.price,
+      })),
+      subtotal: subtotal,
+      shippingCost: shippingCost,
+      total: total,
+      status: paymentMethod === "cod" ? "pending" : "waiting_payment",
+    };
+
     // Show loading
     $(".preloader").show();
 
-    // Simulate API call
-    setTimeout(() => {
-      $(".preloader").hide();
-
-      // Generate random order number
-      const orderNumber = "ORD-" + Math.floor(100000 + Math.random() * 900000);
-
-      // Calculate total
-      const subtotal = cart.reduce((sum, item) => {
-        const price = item.product.discountedPrice || item.product.price;
-        return sum + price * item.quantity;
-      }, 0);
-      const total = subtotal + 15000; // Add shipping
-
-      // Show confirmation
-      $("#order-number").text(orderNumber);
-      $("#order-total").text(`Rp ${formatCurrency(total)}`);
-
-      // post ke api transaksi/save
-      $.ajax({
-        url: `${API_BASE_URL}/api/transaksi/save`,
-        method: "POST",
-        contentType: "application/json",
-        data: JSON.stringify({
-          orderNumber: orderNumber,
-          customerName: name,
-          customerEmail: email,
-          customerPhone: phone,
-          shippingAddress: address,
-          shippingProvince: province,
-          shippingCity: city,
-          shippingMethod: shippingMethod,
-          paymentMethod: paymentMethod,
-          total: total,
-          items: cart.map((item) => ({
-            productId: item.product.id,
-            quantity: item.quantity,
-            price: item.product.discountedPrice || item.product.price,
-          })),
-          total: total,
-        }),
-        success: function (response) {
-          // Clear cart
-          cart = [];
-          updateCartUI();
-
-          // Close modals
-          checkoutModal.close();
-
-          // Show confirmation modal
-          orderConfirmModal.open();
-        },
-        error: function (xhr, status, error) {
-          console.error("Error saving order:", error);
-          showToast("Gagal membuat pesanan", "red");
-        },
-      });
-    }, 2000);
+    // Handle different payment methods
+    if (paymentMethod === "midtrans") {
+      // Process via Midtrans
+      processMidtransPayment(orderData);
+    } else {
+      // Process COD or Bank Transfer normally
+      processRegularPayment(orderData);
+    }
   });
+
+  // Function to process regular payments (COD/Bank Transfer)
+  function processRegularPayment(orderData) {
+    $.ajax({
+      url: `${API_BASE_URL}/api/transaksi/save`,
+      method: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(orderData),
+      success: function (response) {
+        $(".preloader").hide();
+
+        // Clear cart
+        cart = [];
+        updateCartUI();
+
+        // Update confirmation modal
+        $("#order-number").text(orderData.orderNumber);
+        $("#order-total").text(`Rp ${formatCurrency(orderData.total)}`);
+
+        // Close modals and show confirmation
+        checkoutModal.close();
+        orderConfirmModal.open();
+      },
+      error: function (xhr, status, error) {
+        $(".preloader").hide();
+        console.error("Error saving order:", error);
+        showToast("Gagal membuat pesanan", "red");
+      },
+    });
+  }
+
+  // Function to process Midtrans payment
+  function processMidtransPayment(orderData) {
+    // First save the order to your database
+    $.ajax({
+      url: `${API_BASE_URL}/api/transaksi/save`,
+      method: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(orderData),
+      success: function (response) {
+        // Then create Midtrans transaction
+        const transactionDetails = {
+          transaction_details: {
+            order_id: orderData.orderNumber,
+            gross_amount: orderData.total,
+          },
+          customer_details: {
+            first_name: orderData.customerName,
+            email: orderData.customerEmail,
+            phone: orderData.customerPhone,
+          },
+          item_details: orderData.items.map((item) => ({
+            id: item.productId,
+            price: item.price,
+            quantity: item.quantity,
+            name: item.productName,
+          })),
+          enabled_payments: [orderData.midtransMethod],
+        };
+
+        // Get Snap token from your server
+        $.ajax({
+          url: `${API_BASE_URL}/api/midtrans/token`,
+          method: "POST",
+          contentType: "application/json",
+          data: JSON.stringify(transactionDetails),
+          success: function (response) {
+            $(".preloader").hide();
+
+            // Clear cart
+            cart = [];
+            updateCartUI();
+
+            // Open Midtrans payment popup
+            snap.pay(response.token, {
+              onSuccess: function (result) {
+                console.log("Payment success:", result);
+                // Update order status to paid
+                updateOrderStatus(orderData.orderNumber, "paid");
+
+                // Show confirmation modal
+                $("#order-number").text(orderData.orderNumber);
+                $("#order-total").text(`Rp ${formatCurrency(orderData.total)}`);
+                orderConfirmModal.open();
+              },
+              onPending: function (result) {
+                console.log("Payment pending:", result);
+                updateOrderStatus(orderData.orderNumber, "pending");
+                showToast("Pembayaran masih pending", "orange");
+              },
+              onError: function (result) {
+                console.error("Payment error:", result);
+                showToast("Gagal memproses pembayaran", "red");
+              },
+            });
+          },
+          error: function (xhr, status, error) {
+            $(".preloader").hide();
+            console.error("Error getting Snap token:", error);
+            showToast("Gagal memproses pembayaran", "red");
+          },
+        });
+      },
+      error: function (xhr, status, error) {
+        $(".preloader").hide();
+        console.error("Error saving order:", error);
+        showToast("Gagal membuat pesanan", "red");
+      },
+    });
+  }
+
+  // Function to update order status
+  function updateOrderStatus(orderNumber, status) {
+    $.ajax({
+      url: `${API_BASE_URL}/api/transaksi/update-status`,
+      method: "POST",
+      contentType: "application/json",
+      data: JSON.stringify({
+        orderNumber: orderNumber,
+        status: status,
+      }),
+      success: function (response) {
+        console.log("Order status updated:", response);
+      },
+      error: function (xhr, status, error) {
+        console.error("Error updating order status:", error);
+      },
+    });
+  }
 
   // Payment method change
   $(document).on("change", 'input[name="payment-method"]', function () {

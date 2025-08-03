@@ -78,7 +78,7 @@ $("body").on("submit", "form#register", function (e) {
 
   $.ajax({
     type: "POST",
-    url: origin + "/api/register",
+    url: origin + "/api/v2/register",
     data: data,
     success: async function (response) {
       // $(".preloader").slideUp();

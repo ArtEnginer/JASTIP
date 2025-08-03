@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\Sawkrs\MahasiswaModel;
 use App\Models\PenggunaModel;
 use App\Models\UserModel;
 use CodeIgniter\API\ResponseTrait;
@@ -36,11 +35,6 @@ class Home extends BaseController
             'email' => $this->request->getVar('email'),
             'password' => $this->request->getVar('password'),
         ])->addGroup('user')->activate();
-
-        MahasiswaModel::create([
-            'user_id' => $user->id,
-            'nama' => $this->request->getVar('nama'),
-        ]);
 
         $userModel = new UserModel();
         $loggedUser = $userModel->find($user->id);
