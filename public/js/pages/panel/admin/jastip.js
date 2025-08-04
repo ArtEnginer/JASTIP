@@ -1,8 +1,8 @@
 const table = {
-  produk: $("#table-produk").DataTable({
+  jastip: $("#table-jastip").DataTable({
     responsive: true,
     ajax: {
-      url: origin + "/api/produk",
+      url: origin + "/api/jastip",
       dataSrc: "",
     },
     order: [
@@ -19,17 +19,7 @@ const table = {
       },
       { title: "Nama", data: "nama" },
       { title: "Kode", data: "kode" },
-      { title: "Harga", data: "harga", render: (data) => `Rp. ${data}` },
-      { title: "Stok", data: "stok" },
-      { title: "Kategori", data: "kategori.nama" },
-
-      {
-        title: "Gambar",
-        data: "gambar",
-        render: (data, type, row) => {
-          return `<img src="${origin}/api/v2/source/storage/${data}" class="responsive-img" style="max-height: 100px; max-width: 100px;" />`;
-        },
-      },
+      { title: "Deskripsi", data: "deskripsi" },
       {
         title: "Aksi",
         data: "id",
@@ -55,17 +45,15 @@ $("form#form-add").on("submit", function (e) {
     elements[i].readOnly = true;
   }
 
-  console.log(formData);
-
   $.ajax({
     type: "POST",
-    url: origin + "/api/produk",
+    url: origin + "/api/jastip",
     data: formData,
     contentType: false, // WAJIB agar FormData bekerja
     processData: false, // WAJIB agar FormData tidak diubah jadi query string
     success: (data) => {
       form.reset();
-      cloud.pull("produk");
+      cloud.pull("jastip");
       if (data.messages) {
         $.each(data.messages, function (icon, text) {
           Toast.fire({
@@ -101,10 +89,10 @@ $("body").on("click", ".btn-action", function (e) {
         if (result.isConfirmed) {
           $.ajax({
             type: "DELETE",
-            url: origin + "/api/produk/" + id,
+            url: origin + "/api/jastip/" + id,
             cache: false,
             success: (data) => {
-              table.produk.ajax.reload();
+              table.jastip.ajax.reload();
               if (data.messages) {
                 $.each(data.messages, function (icon, text) {
                   Toast.fire({
@@ -119,36 +107,16 @@ $("body").on("click", ".btn-action", function (e) {
       });
       break;
     case "edit":
-      let dataEdit = cloud.get("produk").find((x) => x.id == id);
+      let dataEdit = cloud.get("jastip").find((x) => x.id == id);
+      console.log(dataEdit);
       $("form#form-edit")[0].reset();
       $("form#form-edit").find("input[name=id]").val(dataEdit.id);
-
-      // Isi semua field kecuali input file
       $.each(dataEdit, function (field, val) {
-        const input = $("form#form-edit").find(`[name=${field}]`);
-        if (input.is("select")) {
-          input.val(val).trigger("change");
-        } else if (!input.is('input[type="file"]')) {
-          input.val(val);
-        }
+        $("form#form-edit").find(`[name=${field}]`).val(val);
       });
-
-      // Tambahkan preview gambar yang sudah ada
-      if (dataEdit.gambar) {
-        const previewContainer = $(
-          '<div class="image-preview"><img src="' +
-            origin +
-            "/api/v2/source/storage/" +
-            dataEdit.gambar +
-            '" style="max-height: 150px; margin-bottom: 10px;"><p>Gambar saat ini</p></div>'
-        );
-        $("form#form-edit")
-          .find('input[name="gambar"]')
-          .before(previewContainer);
-      }
-
       M.updateTextFields();
       M.textareaAutoResize($("textarea"));
+      M.FormSelect.init(document.querySelectorAll("select"));
       break;
     default:
       break;
@@ -157,7 +125,12 @@ $("body").on("click", ".btn-action", function (e) {
 
 $("form#form-edit").on("submit", function (e) {
   e.preventDefault();
-  const formData = new FormData(this); // Gunakan FormData untuk menangani file juga
+  const data = {};
+  $(this)
+    .serializeArray()
+    .map(function (x) {
+      data[x.name] = x.value;
+    });
 
   const form = $(this)[0];
   const elements = form.elements;
@@ -167,13 +140,12 @@ $("form#form-edit").on("submit", function (e) {
 
   $.ajax({
     type: "POST",
-    url: origin + "/api/produk/" + $("input[name=id]", this).val(),
-    data: formData,
-    contentType: false,
-    processData: false,
+    url: origin + "/api/jastip/" + data.id,
+    data: data,
+    cache: false,
     success: (data) => {
       $(this)[0].reset();
-      cloud.pull("produk");
+      cloud.pull("jastip");
       if (data.messages) {
         $.each(data.messages, function (icon, text) {
           Toast.fire({
@@ -199,22 +171,16 @@ $("body").on("keyup", "#form-edit input[name=nama]", function (e) {
   $("#form-edit input[name=name]").val($(this).val());
 });
 
-// Tambahkan event ketika popup ditutup
-$("body").on("click", ".btn-popup-close", function () {
-  $(".image-preview").remove(); // Hapus preview gambar
-});
-
 $(document).ready(function () {
   cloud
-    .add(origin + "/api/produk", {
-      name: "produk",
+    .add(origin + "/api/jastip", {
+      name: "jastip",
       callback: (data) => {
-        table.produk.ajax.reload();
+        table.jastip.ajax.reload();
       },
     })
-    .then((produk) => {
-      console.log("Produk data loaded", produk);
+    .then((jastip) => {
+      console.log("jastip data loaded", jastip);
     });
-
   $(".preloader").slideUp();
 });
