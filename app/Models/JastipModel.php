@@ -11,7 +11,7 @@ class JastipModel extends Model
         "id",
         "user_id",
         "keterangan",
-        "catatan", // diisi oleh admin
+        "catatan",
         "status",
         "created_at",
         "updated_at"

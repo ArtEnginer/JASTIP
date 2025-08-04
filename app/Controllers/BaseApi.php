@@ -45,6 +45,15 @@ class BaseApi extends BaseController
     public function show($id = null)
     {
         $data = $this->modelName::find($id);
+        if (!$data) {
+            return $this->failNotFound('Data tidak ditemukan');
+        }
+        if ($this->load) {
+            $data = $data->load($this->load);
+        }
+        if ($this->append) {
+            $data = $data->append($this->append);
+        }
         return $this->respond($data);
     }
 
@@ -53,14 +62,12 @@ class BaseApi extends BaseController
      *
      * @return ResponseInterface|string|void
      */
-    public function new ()
+    public function new()
     {
         return $this->fail(lang('RESTful.notImplemented', ['new']), 501);
     }
 
-    public function beforeCreate(&$data)
-    {
-    }
+    public function beforeCreate(&$data) {}
 
     public function validateCreate(&$request)
     {
@@ -98,9 +105,7 @@ class BaseApi extends BaseController
         ]);
     }
 
-    public function afterCreate(&$data)
-    {
-    }
+    public function afterCreate(&$data) {}
 
     /**
      * Return the editable properties of a resource object
@@ -144,18 +149,10 @@ class BaseApi extends BaseController
         return $this->failNotFound('Data tidak ditemukan');
     }
 
-    public function beforeUpdate(&$data)
-    {
-    }
-    public function afterUpdate(&$data)
-    {
-    }
-    public function beforeDelete(&$data)
-    {
-    }
-    public function afterDelete(&$data)
-    {
-    }
+    public function beforeUpdate(&$data) {}
+    public function afterUpdate(&$data) {}
+    public function beforeDelete(&$data) {}
+    public function afterDelete(&$data) {}
 
     /**
      * Delete the designated resource object from the model

@@ -30,7 +30,7 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
     $routes->group('v2', ['namespace' => 'App\Controllers\Api'], static function ($routes) {
         $routes->get('source/storage/(:any)', 'SourceController::storage/$1');
     });
-
+    $routes->post('jastip', [JastipController::class, 'addJastip']);
     $routes->resource('jastip', ['namespace' => '', 'controller' => JastipController::class, 'websafe' => 1]);
     $routes->post('user/activate', [UserController::class, 'activate']);
     $routes->post('user/deactivate', [UserController::class, 'deactivate']);

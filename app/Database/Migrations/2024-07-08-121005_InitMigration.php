@@ -23,7 +23,7 @@ class InitMigration extends Migration
 
         // table jasa titip barang
         Eloquent::schema()->create("jastip", function (Blueprint $table) {
-            $table->uuid("id")->primary();
+            $table->id();
             $table->foreignUuid('user_id')
                 ->constrained("users")
                 ->onUpdate('cascade')
@@ -35,8 +35,8 @@ class InitMigration extends Migration
         });
 
         Eloquent::schema()->create("jastip_detail", function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->foreignUuid('jastip_id')
+            $table->id();
+            $table->foreignId("jastip_id")
                 ->constrained("jastip")
                 ->onUpdate('cascade')
                 ->onDelete('cascade');

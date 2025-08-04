@@ -285,7 +285,7 @@
   right: -100%;
   transform: translate(0, 0);
   width: 100%;
-  max-width: 30rem;
+  max-width: 75rem;
   height: 100vh;
   max-height: none;
 }
