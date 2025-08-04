@@ -13,6 +13,7 @@ class TransaksiModel extends Model
         "user_id",
         "total_harga",
         "status",
+        "payment_method",
         "nama_penerima",
         "alamat_pengiriman",
         "email_penerima",

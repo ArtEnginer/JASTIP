@@ -1,5 +1,7 @@
 <?= $this->extend('layouts/panel/main') ?>
 <?= $this->section('main') ?>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
     .dashboard-card {
         border-radius: 12px;
@@ -81,11 +83,11 @@
     }
 </style>
 
-<h1 class="page-title mb-4">Dashboard Ecommerce</h1>
+<h1 class="page-title mb-4">Dashboard</h1>
 <div class="page-wrapper">
     <div class="page">
         <div class="container">
-            <!-- Baris Pertama -->
+
             <div class="row">
                 <!-- Card 1 - Produk -->
                 <div class="col s12 m4">
@@ -93,13 +95,10 @@
                         <div class="card-content">
                             <i class="fas fa-box card-icon"></i>
                             <p class="card-title">Total Produk</p>
-                            <h3 class="card-value"><?= $total_products ?? '1,254' ?></h3>
-                            <p><?= $new_products_this_month ?? '42' ?> baru bulan ini</p>
+                            <h3 class="card-value total-produk"></h3>
+
                         </div>
-                        <div class="card-footer">
-                            <i class="fas fa-sync-alt"></i>
-                            <span>Update real-time</span>
-                        </div>
+
                     </div>
                 </div>
 
@@ -109,13 +108,10 @@
                         <div class="card-content">
                             <i class="fas fa-tags card-icon"></i>
                             <p class="card-title">Total Kategori</p>
-                            <h3 class="card-value"><?= $total_categories ?? '28' ?></h3>
-                            <p><?= $popular_category ?? 'Elektronik' ?> paling laris</p>
+                            <h3 class="card-value total-kategori"></h3>
+
                         </div>
-                        <div class="card-footer">
-                            <i class="fas fa-chart-line"></i>
-                            <span>5 kategori baru bulan ini</span>
-                        </div>
+
                     </div>
                 </div>
 
@@ -125,67 +121,15 @@
                         <div class="card-content">
                             <i class="fas fa-shopping-cart card-icon"></i>
                             <p class="card-title">Total Transaksi</p>
-                            <h3 class="card-value"><?= $total_transactions ?? '3,842' ?></h3>
-                            <p><?= $transactions_today ?? '24' ?> transaksi hari ini</p>
+                            <h3 class="card-value total-tansaksi"></h3>
+
                         </div>
-                        <div class="card-footer">
-                            <i class="fas fa-calendar-day"></i>
-                            <span><?= date('d F Y') ?></span>
-                        </div>
+
                     </div>
                 </div>
             </div>
 
-            <!-- Baris Kedua -->
-            <div class="row">
-                <!-- Card 4 - Pendapatan -->
-                <div class="col s12 m4">
-                    <div class="dashboard-card card-purple">
-                        <div class="card-content">
-                            <i class="fas fa-dollar-sign card-icon"></i>
-                            <p class="card-title">Pendapatan Bulan Ini</p>
-                            <h3 class="card-value">Rp <?= isset($monthly_income) ? number_format($monthly_income, 0, ',', '.') : '56,250,000' ?></h3>
-                            <p><?= isset($income_growth) ? $income_growth : '12.5' ?>% dari bulan lalu</p>
-                        </div>
-                        <div class="card-footer">
-                            <i class="fas fa-arrow-up"></i>
-                            <span>Target tercapai <?= isset($target_achievement) ? $target_achievement : '78' ?>%</span>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Card 5 - Pelanggan -->
-                <div class="col s12 m4">
-                    <div class="dashboard-card card-orange">
-                        <div class="card-content">
-                            <i class="fas fa-users card-icon"></i>
-                            <p class="card-title">Total Pelanggan</p>
-                            <h3 class="card-value"><?= $total_customers ?? '1,845' ?></h3>
-                            <p><?= $new_customers_this_month ?? '68' ?> pelanggan baru</p>
-                        </div>
-                        <div class="card-footer">
-                            <i class="fas fa-user-plus"></i>
-                            <span><?= $customer_growth_rate ?? '8.2' ?>% pertumbuhan</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 6 - Rating -->
-                <div class="col s12 m4">
-                    <div class="dashboard-card card-green">
-                        <div class="card-content">
-                            <i class="fas fa-star card-icon"></i>
-                            <p class="card-title">Rating Produk</p>
-                            <h3 class="card-value"><?= isset($average_rating) ? number_format($average_rating, 1) : '4.7' ?>/5</h3>
-                            <p><?= $total_reviews ?? '892' ?> ulasan customer</p>
-                        </div>
-                        <div class="card-footer">
-                            <i class="fas fa-thumbs-up"></i>
-                            <span><?= $positive_reviews_percentage ?? '92' ?>% ulasan positif</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>

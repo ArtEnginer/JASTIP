@@ -64,7 +64,6 @@
   height: 100%;
   width: 100%;
   max-width: 35rem;
-  background: var(--primary-dark);
 }
 
 .parent-wrapper .content-wrapper .logo {

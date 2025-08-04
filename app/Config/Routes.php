@@ -2,6 +2,7 @@
 
 use App\Controllers\Api\DetailTransaksiController;
 use App\Controllers\Api\KategoriController;
+use App\Controllers\Api\MidtransController;
 use App\Controllers\Api\ProdukController;
 use App\Controllers\Api\TransaksiController;
 use App\Controllers\Api\UserController;
@@ -50,7 +51,9 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
     $routes->resource('transaksi', ['namespace' => '', 'controller' => TransaksiController::class, 'websafe' => 1]);
     $routes->resource('detail-transaksi', ['namespace' => '', 'controller' => DetailTransaksiController::class, 'websafe' => 1]);
 
-
+    // Midtrans API
+    $routes->post('midtrans/create-payment', [MidtransController::class, 'createPayment']);
+    $routes->post('midtrans/notification', [MidtransController::class, 'handleNotification']);
     // midtrans / token
     $routes->post('midtrans/token', [TransaksiController::class, 'midtransToken']);
     $routes->post('midtrans/notification', [TransaksiController::class, 'midtransNotification']);

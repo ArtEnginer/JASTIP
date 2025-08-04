@@ -118,4 +118,9 @@
         <button class="btn waves-effect waves-light btn-popup-close">Tutup</button>
     </div>
 </div>
+
+<script>
+    const user = <?= json_encode(auth()->user()) ?>;
+    console.log(user);
+</script>
 <?= $this->endSection() ?>

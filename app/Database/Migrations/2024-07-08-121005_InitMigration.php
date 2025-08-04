@@ -60,6 +60,8 @@ class InitMigration extends Migration
             $table->string("order_id")->unique();
             $table->string("total_harga")->nullable();
             $table->string("status")->default("pending");
+            // payment_method
+            $table->string("payment_method")->nullable();
             $table->string("nama_penerima")->nullable();
             $table->string("alamat_penerima")->nullable();
             $table->string("email_penerima")->nullable();

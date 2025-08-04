@@ -1,11 +1,6 @@
 <?= $this->extend('layouts/panel/main') ?>
 <?= $this->section('main') ?>
-<!-- Midtrans SDK -->
-<script
-    type="text/javascript"
-    src="https://app.sandbox.midtrans.com/snap/snap.js"
-    data-client-key="SB-Mid-client-U4g1AdoP3Ny_Oxuh">
-</script>
+
 <style>
     /* Main Styles */
     .ecommerce-container {
@@ -538,9 +533,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-
-
                                     <div class="row">
                                         <div class="col s12">
                                             <div class="input-field">
@@ -564,51 +556,43 @@
                                     <div class="divider" style="margin: 15px 0;"></div>
 
                                     <h5 class="card-title">Metode Pembayaran</h5>
-                                    <!-- In your checkout modal, replace the payment-methods section with this: -->
-                                    <div class="payment-methods">
-                                        <div class="payment-option">
-                                            <label>
-                                                <input name="payment-method" type="radio" value="transfer" checked />
-                                                <span>Transfer Bank</span>
-                                            </label>
-                                            <div class="payment-details" id="transfer-details">
-                                                <p style="margin: 5px 0 0 25px; font-size: 13px;">
-                                                    Pembayaran melalui transfer bank akan diverifikasi otomatis
-                                                </p>
-                                            </div>
-                                        </div>
 
-                                        <div class="payment-option">
-                                            <label>
-                                                <input name="payment-method" type="radio" value="cod" />
-                                                <span>COD (Bayar di Tempat)</span>
-                                            </label>
-                                            <div class="payment-details" id="cod-details" style="display: none;">
-                                                <p style="margin: 5px 0 0 25px; font-size: 13px;">
-                                                    Bayar ketika barang diterima. Biaya tambahan Rp 10.000.
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        <div class="payment-option">
-                                            <label>
-                                                <input name="payment-method" type="radio" value="midtrans" />
-                                                <span>Pembayaran Digital (Midtrans)</span>
-                                            </label>
-                                            <div class="payment-details" id="midtrans-details" style="display: none;">
-                                                <div style="margin: 5px 0 0 25px; font-size: 13px;">
-                                                    <p>Pilih metode pembayaran digital:</p>
-                                                    <select class="browser-default" id="midtrans-method" style="font-size: 13px;">
-                                                        <option value="gopay">GoPay</option>
-                                                        <option value="shopeepay">ShopeePay</option>
-                                                        <option value="qris">QRIS</option>
-                                                        <option value="bank_transfer">Transfer Bank</option>
-                                                        <option value="credit_card">Kartu Kredit</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                    <div class="payment-option">
+                                        <label>
+                                            <input name="payment-method" type="radio" value="credit_card" />
+                                            <span>Kartu Kredit/Debit</span>
+                                        </label>
+                                        <div class="payment-details" id="credit_card-details" style="display: none;">
+                                            <p style="margin: 5px 0 0 25px; font-size: 13px;">
+                                                Pembayaran aman melalui Midtrans
+                                            </p>
                                         </div>
                                     </div>
+
+                                    <div class="payment-option">
+                                        <label>
+                                            <input name="payment-method" type="radio" value="bank_transfer" />
+                                            <span>Transfer Bank</span>
+                                        </label>
+                                        <div class="payment-details" id="bank_transfer-details" style="display: none;">
+                                            <p style="margin: 5px 0 0 25px; font-size: 13px;">
+                                                Transfer melalui ATM/Internet Banking/Mobile Banking
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="payment-option">
+                                        <label>
+                                            <input name="payment-method" type="radio" value="ewallet" />
+                                            <span>E-Wallet (Gopay, OVO, dll)</span>
+                                        </label>
+                                        <div class="payment-details" id="ewallet-details" style="display: none;">
+                                            <p style="margin: 5px 0 0 25px; font-size: 13px;">
+                                                Pembayaran melalui aplikasi e-wallet
+                                            </p>
+                                        </div>
+                                    </div>
+
                                     <div class="divider" style="margin: 15px 0;"></div>
 
                                     <div class="order-total">

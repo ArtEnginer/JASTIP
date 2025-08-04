@@ -53,13 +53,9 @@
     <?php if (auth()->user()->inGroup('admin')) : ?>
         <script src="<?= base_url("js/pages/panel/admin/$page.js?timestamp=" . time()) ?>"></script>
     <?php endif; ?>
-    <?php if (auth()->user()->inGroup('pimpinan')) : ?>
-        <script src="<?= base_url("js/pages/panel/pimpinan/$page.js?timestamp=" . time()) ?>"></script>
+    <?php if (auth()->user()->inGroup('user')) : ?>
+        <script src="<?= base_url("js/pages/panel/user/$page.js?timestamp=" . time()) ?>"></script>
     <?php endif; ?>
-    <?php if (auth()->user()->inGroup('wisatawan')) : ?>
-        <script src="<?= base_url("js/pages/panel/wisatawan/$page.js?timestamp=" . time()) ?>"></script>
-    <?php endif; ?>
-
     <?= $this->renderSection('script') ?>
 </body>
 

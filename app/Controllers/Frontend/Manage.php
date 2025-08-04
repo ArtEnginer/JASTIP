@@ -24,11 +24,15 @@ class Manage extends BaseController
             "user" => $this->user,
         ]);
     }
-    public function index(): string
+    public function index()
     {
         $this->view->setData([
             "page" => "dashboard",
         ]);
+
+        if (auth()->user()->inGroup('user')) {
+            return redirect()->to(route_to('panel/transaksi-barang'));
+        }
         return $this->view->render("pages/panel/admin/index");
     }
     public function produk(): string
