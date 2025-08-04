@@ -31,7 +31,7 @@ CI_ENVIRONMENT = development
 #--------------------------------------------------------------------
 
 database.default.hostname = localhost
-database.default.database = db_sipres
+database.default.database = db_jastip
 database.default.username = root
 database.default.password = 
 database.default.DBDriver = MySQLi

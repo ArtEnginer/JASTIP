@@ -61,18 +61,7 @@ class AuthGroups extends ShieldAuthGroups
             'title'       => 'Beta User',
             'description' => 'Has access to beta-level features.',
         ],
-        'guru' => [
-            'title'       => 'Guru',
-            'description' => 'Guru',
-        ],
-        'pimpinan' => [
-            'title'       => 'pimpinan',
-            'description' => 'pimpinan',
-        ],
-        'wisatawan' => [
-            'title'       => 'wisatawan',
-            'description' => 'wisatawan',
-        ],
+
 
     ];
 
@@ -92,17 +81,6 @@ class AuthGroups extends ShieldAuthGroups
         'users.edit'          => 'Can edit existing non-admin users',
         'users.delete'        => 'Can delete existing non-admin users',
         'beta.access'         => 'Can access beta-level features',
-
-        'guru.access'         => 'Can access the sites guru area',
-        'guru.settings'       => 'Can access the main site settings for guru',
-
-        // pimpinan
-        'pimpinan.access'     => 'Can access the sites pimpinan area',
-        'pimpinan.settings'   => 'Can access the main site settings for pimpinan',
-
-        // wisatawan
-        'wisatawan.access'      => 'Can access the sites wisatawan area',
-        'wisatawan.settings'    => 'Can access the main site settings for wisatawan',
 
 
     ];
@@ -138,18 +116,6 @@ class AuthGroups extends ShieldAuthGroups
         'user' => [],
         'beta' => [
             'beta.access',
-        ],
-        'guru' => [
-            'guru.access',
-            'guru.settings',
-        ],
-        'pimpinan' => [
-            'pimpinan.access',
-            'pimpinan.settings',
-        ],
-        'wisatawan' => [
-            'wisatawan.access',
-            'wisatawan.settings',
         ],
 
     ];

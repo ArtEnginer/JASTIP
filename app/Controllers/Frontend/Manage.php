@@ -30,42 +30,19 @@ class Manage extends BaseController
             "page" => "dashboard",
         ]);
 
-        if (auth()->user()->inGroup('user')) {
-            return redirect()->to(route_to('panel/transaksi-barang'));
-        }
+        // if (auth()->user()->inGroup('user')) {
+        //     return redirect()->to(route_to('panel/transaksi-barang'));
+        // }
         return $this->view->render("pages/panel/admin/index");
     }
-    public function produk(): string
+    public function jastip(): string
     {
         $this->view->setData([
-            "page" => "produk",
-            "kategori" => KategoriModel::all(),
+            "page" => "jastip",
+
 
         ]);
-        return $this->view->render("pages/panel/admin/produk");
-    }
-    public function kategori(): string
-    {
-        $this->view->setData([
-            "page" => "kategori",
-        ]);
-        return $this->view->render("pages/panel/admin/kategori");
-    }
-
-    public function transaksi(): string
-    {
-        $this->view->setData([
-            "page" => "transaksi",
-        ]);
-        return $this->view->render("pages/panel/admin/transaksi");
-    }
-
-    public function transaksiBarang(): string
-    {
-        $this->view->setData([
-            "page" => "transaksi-barang",
-        ]);
-        return $this->view->render("pages/panel/admin/transaksi-barang");
+        return $this->view->render("pages/panel/admin/jastip");
     }
 
     public function user(): string
@@ -74,13 +51,5 @@ class Manage extends BaseController
             "page" => "user",
         ]);
         return $this->view->render("pages/panel/admin/user");
-    }
-
-    public function laporan(): string
-    {
-        $this->view->setData([
-            "page" => "laporan",
-        ]);
-        return $this->view->render("pages/panel/admin/laporan");
     }
 }

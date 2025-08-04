@@ -4,28 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TransaksiModel extends Model
+class JastipModel extends Model
 {
-    protected $table = 'transaksi';
+    protected $table = 'jastip';
     protected $fillable = [
         "id",
-        "order_id",
         "user_id",
-        "total_harga",
+        "keterangan",
+        "catatan", // diisi oleh admin
         "status",
-        "payment_method",
-        "nama_penerima",
-        "alamat_pengiriman",
-        "email_penerima",
-        'nomor_telepon_penerima',
         "created_at",
         "updated_at"
-
     ];
 
 
     public function user()
     {
         return $this->belongsTo(PenggunaModel::class, 'user_id', 'id');
+    }
+
+    public function details()
+    {
+        return $this->hasMany(JastipDetailModel::class, 'jastip_id', 'id');
     }
 }

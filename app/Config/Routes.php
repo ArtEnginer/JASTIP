@@ -1,15 +1,10 @@
 <?php
 
-use App\Controllers\Api\DetailTransaksiController;
-use App\Controllers\Api\KategoriController;
-use App\Controllers\Api\MidtransController;
-use App\Controllers\Api\ProdukController;
-use App\Controllers\Api\TransaksiController;
+use App\Controllers\Api\JastipController;
 use App\Controllers\Api\UserController;
 use App\Controllers\Frontend\Manage;
 use App\Controllers\Migrate;
 use CodeIgniter\Router\RouteCollection;
-use App\Controllers\Home;
 
 
 /**
@@ -27,36 +22,16 @@ $routes->environment('development', static function ($routes) {
 $routes->group('panel', static function (RouteCollection $routes) {
     $routes->get('', [Manage::class, 'index']);
     $routes->get('dashboard', [Manage::class, 'dashboard']);
-    // halaman untuk transaksi barang
-    $routes->get('transaksi-barang', [Manage::class, 'transaksiBarang']);
-    $routes->get('produk', [Manage::class, 'produk']);
-    $routes->get('kategori', [Manage::class, 'kategori']);
-    $routes->get('transaksi', [Manage::class, 'transaksi']);
-    $routes->get('detail-transaksi', [Manage::class, 'detailTransaksi']);
+    $routes->get('jastip', [Manage::class, 'jastip']);
     $routes->get('user', [Manage::class, 'user']);
 });
 
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($routes) {
     $routes->group('v2', ['namespace' => 'App\Controllers\Api'], static function ($routes) {
-        $routes->post('register', [Home::class, 'register']);
-        $routes->get('produk', 'ProdukController::index');
         $routes->get('source/storage/(:any)', 'SourceController::storage/$1');
     });
 
-    $routes->resource('produk', ['namespace' => '', 'controller' => ProdukController::class, 'websafe' => 1]);
-    $routes->resource('kategori', ['namespace' => '', 'controller' => KategoriController::class, 'websafe' => 1]);
-
-    $routes->post('transaksi/save', [TransaksiController::class, 'saveTransaksi']);
-    $routes->post('transaksi/update-status', [TransaksiController::class, 'updateStatus']);
-    $routes->resource('transaksi', ['namespace' => '', 'controller' => TransaksiController::class, 'websafe' => 1]);
-    $routes->resource('detail-transaksi', ['namespace' => '', 'controller' => DetailTransaksiController::class, 'websafe' => 1]);
-
-    // Midtrans API
-    $routes->post('midtrans/create-payment', [MidtransController::class, 'createPayment']);
-    $routes->post('midtrans/notification', [MidtransController::class, 'handleNotification']);
-    // midtrans / token
-    $routes->post('midtrans/token', [TransaksiController::class, 'midtransToken']);
-    $routes->post('midtrans/notification', [TransaksiController::class, 'midtransNotification']);
+    $routes->resource('jastip', ['namespace' => '', 'controller' => JastipController::class, 'websafe' => 1]);
     $routes->post('user/activate', [UserController::class, 'activate']);
     $routes->post('user/deactivate', [UserController::class, 'deactivate']);
     $routes->post('user/update/(:uuid)', [UserController::class, 'update']);

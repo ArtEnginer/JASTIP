@@ -1,0 +1,143 @@
+<?php
+
+/** @var \CodeIgniter\View\View $this */
+?>
+
+<?= $this->extend('layouts/panel/main') ?>
+<?= $this->section('main') ?>
+
+<h1 class="page-title">Data produk</h1>
+<div class="page-wrapper">
+    <div class="page">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-end">
+                    <button class="btn waves-effect waves-light green btn-popup" data-target="add" type="button" data-target="form"><i class="material-icons left">add</i>Tambah</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <div class="table-wrapper">
+                        <table class="striped highlight responsive-table" id="table-produk" width="100%">
+                            <thead>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?= $this->endSection() ?>
+
+
+
+<?= $this->section('popup') ?>
+<div class="popup side" data-page="add">
+    <h1>Tambah produk</h1>
+    <br>
+    <form id="form-add" class="row" enctype="multipart/form-data">
+        <input type="hidden" name="id" id="add-id">
+        <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>">
+        <div class="input-field col s12">
+            <input name="nama" id="add-nama" type="text" class="validate" required>
+            <label for="add-nama">Nama produk</label>
+        </div>
+
+        <div class="input-field col s12">
+            <input name="kode" id="add-kode" type="text" class="validate" required>
+            <label for="add-kode">Kode produk</label>
+        </div>
+
+        <div class="input-field col s12">
+            <select name="kategori_kode" id="add-kategori_kode" required>
+                <option value="" disabled selected>Pilih Kategori</option>
+                <?php foreach ($kategori as $kat) : ?>
+                    <option value="<?= $kat->kode ?>"><?= $kat->nama ?></option>
+                <?php endforeach; ?>
+            </select>
+            <label for="add-kategori_kode">Kategori</label>
+        </div>
+
+        <div class="input-field col s12">
+            <input name="harga" id="add-harga" type="number" class="validate" required>
+            <label for="add-harga">Harga produk</label>
+        </div>
+
+        <div class="input-field col s12">
+            <input name="stok" id="add-stok" type="number" class="validate" required>
+            <label for="add-stok">Stok produk</label>
+
+        </div>
+
+        <div class="input-field col s12">
+            <input name="gambar" id="add-gambar" type="file" class="validate" accept="image/*" required>
+            <label for="add-gambar">Gambar produk</label>
+        </div>
+
+
+        <div class="input-field col s12">
+            <textarea name="deskripsi" id="add-deskripsi" class="materialize-textarea" required></textarea>
+            <label for="add-deskripsi">Deskripsi produk</label>
+        </div>
+
+        <div class="row">
+            <div class="input-field col s12 center">
+                <button class="btn waves-effect waves-light green" type="submit"><i class="material-icons left">save</i>Simpan</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="popup side" data-page="edit">
+    <h1>Edit Data produk</h1>
+    <br>
+    <form id="form-edit" class="row" enctype="multipart/form-data">
+        <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>">
+        <input type="hidden" name="id" id="edit-id">
+
+        <div class="input-field col s12">
+            <input name="nama" id="edit-nama" type="text" class="validate" required>
+            <label for="edit-nama">Nama produk</label>
+        </div>
+        <div class="input-field col s12">
+            <input name="kode" id="edit-kode" type="text" class="validate" required>
+            <label for="edit-kode">Kode produk</label>
+        </div>
+        <div class="input-field col s12">
+            <select name="kategori_kode" id="edit-kategori_kode" required>
+                <option value="" disabled>Pilih Kategori</option>
+                <?php foreach ($kategori as $kat) : ?>
+                    <option value="<?= $kat->kode ?>"><?= $kat->nama ?></option>
+                <?php endforeach; ?>
+            </select>
+            <label for="edit-kategori_kode">Kategori</label>
+        </div>
+        <div class="input-field col s12">
+            <input name="harga" id="edit-harga" type="number" class="validate" required>
+            <label for="edit-harga">Harga produk</label>
+        </div>
+        <div class="input-field col s12">
+            <input name="stok" id="edit-stok" type="number" class="validate" required>
+            <label for="edit-stok">Stok produk</label>
+        </div>
+        <div class="input-field col s12">
+            <input name="gambar" id="edit-gambar" type="file" class="validate" accept="image/*">
+            <label for="edit-gambar">Gambar produk</label>
+        </div>
+        <div class="input-field col s12">
+            <textarea name="deskripsi" id="edit-deskripsi" class="materialize-textarea" required></textarea>
+            <label for="edit-deskripsi">Deskripsi produk</label>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 center">
+                <button class="btn waves-effect waves-light green" type="submit"><i class="material-icons left">save</i>Simpan</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<?= $this->endSection() ?>
