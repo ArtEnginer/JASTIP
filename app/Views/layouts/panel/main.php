@@ -48,6 +48,7 @@
         const menuContainer = $('.menu-container');
         const page = '<?= $page ?? 'dashboard' ?>';
         const baseUrl = '<?= base_url() ?>';
+        const userId = '<?= auth()->user()->id ?>';
     </script>
     <script src="<?= base_url("js/pages/panel/main.js?timestamp=" . time()) ?>"></script>
     <?php if (auth()->user()->inGroup('admin')) : ?>

@@ -1,75 +1,3 @@
-const table = {
-  jastip: $("#table-jastip").DataTable({
-    responsive: true,
-    ajax: {
-      url: origin + "/api/jastip",
-      dataSrc: "",
-    },
-    order: [[5, "desc"]],
-    columns: [
-      {
-        title: "#",
-        render: function (data, type, row, meta) {
-          return meta.row + meta.settings._iDisplayStart + 1;
-        },
-      },
-      {
-        title: "Pemesan",
-        data: "user",
-        render: function (data) {
-          return data ? data.name : "Unknown";
-        },
-      },
-      { title: "Keterangan", data: "keterangan" },
-      {
-        title: "Catatan",
-        data: "catatan",
-      },
-      {
-        title: "Jumlah Item",
-        data: "details",
-        render: function (data) {
-          return data ? data.length : 0;
-        },
-      },
-      {
-        title: "Status",
-        data: "status",
-        render: function (data) {
-          const statusClasses = {
-            proses: "blue",
-            selesai: "green",
-            dibatalkan: "red",
-            default: "grey",
-          };
-          return `<span class="btn btn-sm rounded ${
-            statusClasses[data] || statusClasses.default
-          }">${data}</span>`;
-        },
-      },
-
-      {
-        title: "Tanggal",
-        data: "created_at",
-        render: function (data) {
-          return new Date(data).toLocaleDateString();
-        },
-      },
-      {
-        title: "Aksi",
-        data: "id",
-        render: (data, type, row) => {
-          return `<div class="table-control">
-            <a role="button" class="btn waves-effect waves-light btn-action btn-popup blue" data-action="detail" data-id="${data}"><i class="material-icons">info</i></a>
-            <a role="button" class="btn waves-effect waves-light btn-action btn-popup orange darken-2" data-target="edit" data-action="edit" data-id="${data}"><i class="material-icons">edit</i></a>
-            <a role="button" class="btn waves-effect waves-light btn-action red" data-action="delete" data-id="${data}"><i class="material-icons">delete</i></a>
-          </div>`;
-        },
-      },
-    ],
-  }),
-};
-
 // Counter untuk item baru
 let itemCounter = 1;
 
@@ -89,7 +17,7 @@ function addItemForm(containerId, index = null, itemData = null) {
   }" required>
         <label>Nama Barang</label>
       </div>
-      <div class="input-field col s2">
+      <div class="input-field col s3">
         <input type="number" name="items[${newIndex}][jumlah]" class="validate" value="${
     itemData ? itemData.jumlah : ""
   }" required min="1">
@@ -132,7 +60,7 @@ $(document).on("click", ".remove-item", function () {
   $(this).closest(".item-row").remove();
 });
 
-// Submit form tambah jastip
+// Submit form tambah pengajuan
 $("form#form-add").on("submit", function (e) {
   e.preventDefault();
 
@@ -155,7 +83,7 @@ $("form#form-add").on("submit", function (e) {
     processData: false,
     success: (data) => {
       form.reset();
-      table.jastip.ajax.reload();
+      table.pengajuan.ajax.reload();
       if (data.messages) {
         $.each(data.messages, function (icon, text) {
           Toast.fire({
@@ -183,7 +111,7 @@ $("form#form-add").on("submit", function (e) {
   });
 });
 
-// Submit form edit jastip
+// Submit form edit pengajuan
 $("form#form-edit").on("submit", function (e) {
   e.preventDefault();
 
@@ -204,7 +132,7 @@ $("form#form-edit").on("submit", function (e) {
     processData: false,
     success: (data) => {
       form.reset();
-      table.jastip.ajax.reload();
+      table.pengajuan.ajax.reload();
       if (data.messages) {
         $.each(data.messages, function (icon, text) {
           Toast.fire({
@@ -255,7 +183,7 @@ $("body").on("click", ".btn-action", function (e) {
             url: origin + "/api/jastip/" + id,
             cache: false,
             success: (data) => {
-              table.jastip.ajax.reload();
+              table.pengajuan.ajax.reload();
               if (data.messages) {
                 $.each(data.messages, function (icon, text) {
                   Toast.fire({
@@ -357,6 +285,6 @@ $(document).ready(function () {
   M.textareaAutoResize($("textarea"));
 
   // Load data awal
-  table.jastip.ajax.reload();
+  table.pengajuan.ajax.reload();
   $(".preloader").slideUp();
 });

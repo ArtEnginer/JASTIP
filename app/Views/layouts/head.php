@@ -109,4 +109,4 @@
 <script src="/js/tailwind.js"></script>
 
 
-<title>E-COMMERCE</title>
+<title>JASTIP</title>

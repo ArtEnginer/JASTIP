@@ -19,7 +19,9 @@
 <body>
     <?= $this->include('layouts/_preloader') ?>
     <div class="parent-wrapper">
-
+        <div class="hero-wrapper">
+            <?= $this->include('layouts/auth/hero') ?>
+        </div>
         <div class="content-wrapper">
             <?= $this->renderSection('main') ?>
         </div>

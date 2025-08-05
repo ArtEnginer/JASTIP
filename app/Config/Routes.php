@@ -3,6 +3,7 @@
 use App\Controllers\Api\JastipController;
 use App\Controllers\Api\UserController;
 use App\Controllers\Frontend\Manage;
+use App\Controllers\Home;
 use App\Controllers\Migrate;
 use CodeIgniter\Router\RouteCollection;
 
@@ -23,11 +24,14 @@ $routes->group('panel', static function (RouteCollection $routes) {
     $routes->get('', [Manage::class, 'index']);
     $routes->get('dashboard', [Manage::class, 'dashboard']);
     $routes->get('jastip', [Manage::class, 'jastip']);
+    $routes->get('pengajuan', [Manage::class, 'pengajuan']);
+    $routes->get('riwayat', [Manage::class, 'riwayat']);
     $routes->get('user', [Manage::class, 'user']);
 });
 
 $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($routes) {
     $routes->group('v2', ['namespace' => 'App\Controllers\Api'], static function ($routes) {
+        $routes->post('register', [Home::class, 'register']);
         $routes->get('source/storage/(:any)', 'SourceController::storage/$1');
     });
     $routes->post('jastip', [JastipController::class, 'addJastip']);

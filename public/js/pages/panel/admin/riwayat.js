@@ -1,5 +1,5 @@
 const table = {
-  jastip: $("#table-jastip").DataTable({
+  riwayat: $("#table-riwayat").DataTable({
     responsive: true,
     ajax: {
       url: origin + "/api/jastip",
@@ -61,8 +61,7 @@ const table = {
         render: (data, type, row) => {
           return `<div class="table-control">
             <a role="button" class="btn waves-effect waves-light btn-action btn-popup blue" data-action="detail" data-id="${data}"><i class="material-icons">info</i></a>
-            <a role="button" class="btn waves-effect waves-light btn-action btn-popup orange darken-2" data-target="edit" data-action="edit" data-id="${data}"><i class="material-icons">edit</i></a>
-            <a role="button" class="btn waves-effect waves-light btn-action red" data-action="delete" data-id="${data}"><i class="material-icons">delete</i></a>
+           
           </div>`;
         },
       },
@@ -132,7 +131,7 @@ $(document).on("click", ".remove-item", function () {
   $(this).closest(".item-row").remove();
 });
 
-// Submit form tambah jastip
+// Submit form tambah riwayat
 $("form#form-add").on("submit", function (e) {
   e.preventDefault();
 
@@ -155,7 +154,7 @@ $("form#form-add").on("submit", function (e) {
     processData: false,
     success: (data) => {
       form.reset();
-      table.jastip.ajax.reload();
+      table.riwayat.ajax.reload();
       if (data.messages) {
         $.each(data.messages, function (icon, text) {
           Toast.fire({
@@ -183,7 +182,7 @@ $("form#form-add").on("submit", function (e) {
   });
 });
 
-// Submit form edit jastip
+// Submit form edit riwayat
 $("form#form-edit").on("submit", function (e) {
   e.preventDefault();
 
@@ -204,7 +203,7 @@ $("form#form-edit").on("submit", function (e) {
     processData: false,
     success: (data) => {
       form.reset();
-      table.jastip.ajax.reload();
+      table.riwayat.ajax.reload();
       if (data.messages) {
         $.each(data.messages, function (icon, text) {
           Toast.fire({
@@ -255,7 +254,7 @@ $("body").on("click", ".btn-action", function (e) {
             url: origin + "/api/jastip/" + id,
             cache: false,
             success: (data) => {
-              table.jastip.ajax.reload();
+              table.riwayat.ajax.reload();
               if (data.messages) {
                 $.each(data.messages, function (icon, text) {
                   Toast.fire({
@@ -357,6 +356,6 @@ $(document).ready(function () {
   M.textareaAutoResize($("textarea"));
 
   // Load data awal
-  table.jastip.ajax.reload();
+  table.riwayat.ajax.reload();
   $(".preloader").slideUp();
 });

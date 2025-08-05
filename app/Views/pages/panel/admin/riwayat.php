@@ -1,19 +1,19 @@
 <?= $this->extend('layouts/panel/main') ?>
 <?= $this->section('main') ?>
 
-<h1 class="page-title">Data Jasa Titip</h1>
+<h1 class="page-title">Data Jasa riwayat</h1>
 <div class="page-wrapper">
     <div class="page">
         <div class="container">
             <div class="row">
                 <!-- <div class="col-12 text-end">
-                    <button class="btn waves-effect waves-light green btn-popup rounded" data-target="add" type="button"><i class="material-icons left">add</i>Tambah Jastip</button>
+                    <button class="btn waves-effect waves-light green btn-popup rounded" data-target="add" type="button"><i class="material-icons left">add</i>Tambah riwayat</button>
                 </div> -->
             </div>
             <div class="row">
                 <div class="col s12">
                     <div class="table-wrapper">
-                        <table class="striped highlight responsive-table" id="table-jastip" width="100%">
+                        <table class="striped highlight responsive-table" id="table-riwayat" width="100%">
                             <thead>
 
                             </thead>
@@ -29,9 +29,9 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('popup') ?>
-<!-- Form Tambah Jastip -->
+<!-- Form Tambah riwayat -->
 <div class="popup side" data-page="add">
-    <h1>Tambah Jasa Titip</h1>
+    <h1>Tambah Jasa riwayat</h1>
     <br>
     <form id="form-add" class="row" enctype="multipart/form-data">
         <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>">
@@ -74,9 +74,9 @@
     </form>
 </div>
 
-<!-- Form Edit Jastip -->
+<!-- Form Edit riwayat -->
 <div class="popup side" data-page="edit">
-    <h1>Edit Jasa Titip</h1>
+    <h1>Edit Jasa riwayat</h1>
     <br>
     <form id="form-edit" class="row" enctype="multipart/form-data">
         <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>">
@@ -96,7 +96,7 @@
                 <option value="selesai">Selesai</option>
                 <option value="batal">Batal</option>
             </select>
-            <label>Status Jastip</label>
+            <label>Status riwayat</label>
         </div>
 
         <div class="input-field col s12">
@@ -120,9 +120,9 @@
     </form>
 </div>
 
-<!-- Popup Detail Jastip -->
+<!-- Popup Detail riwayat -->
 <div class="popup side" data-page="detail">
-    <h1>Detail Jasa Titip</h1>
+    <h1>Detail Jasa riwayat</h1>
     <br>
     <div class="row">
         <div class="col s12">

@@ -30,9 +30,9 @@ class Manage extends BaseController
             "page" => "dashboard",
         ]);
 
-        // if (auth()->user()->inGroup('user')) {
-        //     return redirect()->to(route_to('panel/transaksi-barang'));
-        // }
+        if (auth()->user()->inGroup('user')) {
+            return redirect()->to(route_to('panel'));
+        }
         return $this->view->render("pages/panel/admin/index");
     }
     public function jastip(): string
@@ -43,6 +43,24 @@ class Manage extends BaseController
 
         ]);
         return $this->view->render("pages/panel/admin/jastip");
+    }
+    public function pengajuan(): string
+    {
+        $this->view->setData([
+            "page" => "pengajuan",
+
+
+        ]);
+        return $this->view->render("pages/panel/admin/pengajuan");
+    }
+    public function riwayat(): string
+    {
+        $this->view->setData([
+            "page" => "riwayat",
+
+
+        ]);
+        return $this->view->render("pages/panel/admin/riwayat");
     }
 
     public function user(): string

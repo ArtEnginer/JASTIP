@@ -89,39 +89,39 @@
         <div class="container">
 
             <div class="row">
-                <!-- Card 1 - Produk -->
+                <!-- Card 1 - Pengajuan -->
                 <div class="col s12 m4">
                     <div class="dashboard-card card-blue">
                         <div class="card-content">
                             <i class="fas fa-box card-icon"></i>
-                            <p class="card-title">Total Produk</p>
-                            <h3 class="card-value total-produk"></h3>
+                            <p class="card-title">Total Pengajuan</p>
+                            <h3 class="card-value total-pengajuan"></h3>
 
                         </div>
 
                     </div>
                 </div>
 
-                <!-- Card 2 - Kategori -->
+                <!-- Card 2 - Proses -->
                 <div class="col s12 m4">
                     <div class="dashboard-card card-pink">
                         <div class="card-content">
                             <i class="fas fa-tags card-icon"></i>
-                            <p class="card-title">Total Kategori</p>
-                            <h3 class="card-value total-kategori"></h3>
+                            <p class="card-title">Sedang Proses Pengiriman</p>
+                            <h3 class="card-value total-proses"></h3>
 
                         </div>
 
                     </div>
                 </div>
 
-                <!-- Card 3 - Transaksi -->
+                <!-- Card 3 - Selesai -->
                 <div class="col s12 m4">
                     <div class="dashboard-card card-teal">
                         <div class="card-content">
                             <i class="fas fa-shopping-cart card-icon"></i>
-                            <p class="card-title">Total Transaksi</p>
-                            <h3 class="card-value total-tansaksi"></h3>
+                            <p class="card-title">Total Pengiriman Selesai</p>
+                            <h3 class="card-value total-selesai"></h3>
 
                         </div>
 
