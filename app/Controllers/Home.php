@@ -9,10 +9,10 @@ use CodeIgniter\API\ResponseTrait;
 class Home extends BaseController
 {
     use ResponseTrait;
-    public function index(): string
+    public function index()
     {
-
-        return view('pages/landing/index');
+        // route to panel
+        return redirect()->to(route_to('panel'));
     }
 
     public function register()
