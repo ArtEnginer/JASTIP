@@ -24,27 +24,26 @@ class InitMigration extends Migration
         // table jasa titip barang
         Eloquent::schema()->create("jastip", function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('user_id')
-                ->constrained("users")
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->string("nomor_resi")->unique()->nullable();
+            $table->string("nama_penerima")->nullable();
+            $table->string("alamat_penerima")->nullable();
+            $table->string("no_telp_penerima")->nullable();
+            $table->decimal("biaya", 10, 2)->nullable();
+            $table->decimal("bobot", 10, 2)->nullable();
             $table->string("keterangan")->nullable();
             $table->string("catatan")->nullable();
             $table->string("status")->default('pending');
             $table->timestamps();
         });
 
-        Eloquent::schema()->create("jastip_detail", function (Blueprint $table) {
+        // table status history
+        Eloquent::schema()->create("status", function (Blueprint $table) {
             $table->id();
-            $table->foreignId("jastip_id")
+            $table->foreignId('jastip_id')
                 ->constrained("jastip")
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string("nama_barang");
-            $table->integer("jumlah");
-            $table->string("keterangan")->nullable();
-            $table->string("catatan")->nullable();
-            $table->string("status")->default('pending');
+            $table->string("status");
             $table->timestamps();
         });
     }
@@ -53,6 +52,6 @@ class InitMigration extends Migration
     {
         Eloquent::schema()->dropIfExists('auth_jwt');
         Eloquent::schema()->dropIfExists('jastip');
-        Eloquent::schema()->dropIfExists('jastip_detail');
+        Eloquent::schema()->dropIfExists('status');
     }
 }

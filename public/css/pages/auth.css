@@ -305,7 +305,6 @@
   border-radius: 2rem;
   background: linear-gradient(45deg, var(--primary), var(--primary-dark));
   border: none;
-  padding: 1rem 2rem;
   font-size: 1.1rem;
   font-weight: 600;
   text-transform: none;

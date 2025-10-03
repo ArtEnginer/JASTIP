@@ -4,16 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class JastipDetailModel extends Model
+class StatusModel extends Model
 {
-    protected $table = 'jastip_detail';
+    protected $table = 'status';
     protected $fillable = [
         "id",
         "jastip_id",
-        "nama_barang",
-        "jumlah",
-        "keterangan",
-        "catatan", // diisi oleh admin
         "status",
         "created_at",
         "updated_at"

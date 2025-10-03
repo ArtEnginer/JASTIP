@@ -9,7 +9,12 @@ class JastipModel extends Model
     protected $table = 'jastip';
     protected $fillable = [
         "id",
-        "user_id",
+        "nomor_resi",
+        "nama_penerima",
+        "alamat_penerima",
+        "no_telp_penerima",
+        "biaya",
+        "bobot",
         "keterangan",
         "catatan",
         "status",
@@ -17,14 +22,9 @@ class JastipModel extends Model
         "updated_at"
     ];
 
-
-    public function user()
+    // status history relation
+    public function statusHistory()
     {
-        return $this->belongsTo(PenggunaModel::class, 'user_id', 'id');
-    }
-
-    public function details()
-    {
-        return $this->hasMany(JastipDetailModel::class, 'jastip_id', 'id');
+        return $this->hasMany(StatusModel::class, 'jastip_id', 'id');
     }
 }

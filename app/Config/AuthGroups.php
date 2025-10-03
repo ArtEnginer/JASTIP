@@ -23,7 +23,7 @@ class AuthGroups extends ShieldAuthGroups
      * --------------------------------------------------------------------
      * The group that a newly registered user is added to.
      */
-    public string $defaultGroup = 'user';
+    public string $defaultGroup = 'admin';
 
     /**
      * --------------------------------------------------------------------
@@ -61,6 +61,14 @@ class AuthGroups extends ShieldAuthGroups
             'title'       => 'Beta User',
             'description' => 'Has access to beta-level features.',
         ],
+        'gudang1' => [
+            'title'       => 'gudang 1',
+            'description' => 'Pengguna dengan akses ke gudang 1',
+        ],
+        'gudang2' => [
+            'title'       => 'gudang 2',
+            'description' => 'Pengguna dengan akses ke gudang 2',
+        ],
 
 
     ];
@@ -81,6 +89,9 @@ class AuthGroups extends ShieldAuthGroups
         'users.edit'          => 'Can edit existing non-admin users',
         'users.delete'        => 'Can delete existing non-admin users',
         'beta.access'         => 'Can access beta-level features',
+        // gudang1 DAN 2
+        'gudang1.access'      => 'Can access gudang 1 features',
+        'gudang2.access'      => 'Can access gudang 2 features',
 
 
     ];
@@ -117,6 +128,19 @@ class AuthGroups extends ShieldAuthGroups
         'beta' => [
             'beta.access',
         ],
-
+        'gudang1' => [
+            'admin.access',
+            'users.create',
+            'users.edit',
+            'users.delete',
+            'beta.access',
+        ],
+        'gudang2' => [
+            'admin.access',
+            'users.create',
+            'users.edit',
+            'users.delete',
+            'beta.access',
+        ],
     ];
 }

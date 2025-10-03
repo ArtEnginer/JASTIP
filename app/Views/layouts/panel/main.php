@@ -57,7 +57,7 @@
     <?php if (auth()->user()->inGroup('user')) : ?>
         <script src="<?= base_url("js/pages/panel/user/$page.js?timestamp=" . time()) ?>"></script>
     <?php endif; ?>
-    <?= $this->renderSection('script') ?>
+    <?= $this->renderSection('scripts') ?>
 </body>
 
 </html>

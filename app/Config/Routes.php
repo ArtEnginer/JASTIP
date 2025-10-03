@@ -2,7 +2,9 @@
 
 use App\Controllers\Api\JastipController;
 use App\Controllers\Api\UserController;
+use App\Controllers\DemoController;
 use App\Controllers\Frontend\Manage;
+use App\Controllers\Frontend\PublicTrackingController;
 use App\Controllers\Home;
 use App\Controllers\Migrate;
 use CodeIgniter\Router\RouteCollection;
@@ -12,6 +14,7 @@ use CodeIgniter\Router\RouteCollection;
  * @var RouteCollection $routes
  */
 $routes->get('/', 'Home::index');
+$routes->get('tracking', [PublicTrackingController::class, 'index']);
 $routes->addPlaceholder('uuid', '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}');
 
 
@@ -24,6 +27,7 @@ $routes->group('panel', static function (RouteCollection $routes) {
     $routes->get('', [Manage::class, 'index']);
     $routes->get('dashboard', [Manage::class, 'dashboard']);
     $routes->get('jastip', [Manage::class, 'jastip']);
+    $routes->get('tracking', [Manage::class, 'tracking']);
     $routes->get('pengajuan', [Manage::class, 'pengajuan']);
     $routes->get('riwayat', [Manage::class, 'riwayat']);
     $routes->get('user', [Manage::class, 'user']);
@@ -33,8 +37,9 @@ $routes->group('api', ['namespace' => 'App\Controllers\Api'], static function ($
     $routes->group('v2', ['namespace' => 'App\Controllers\Api'], static function ($routes) {
         $routes->post('register', [Home::class, 'register']);
         $routes->get('source/storage/(:any)', 'SourceController::storage/$1');
+        $routes->get('jastip/track/(:any)', [JastipController::class, 'trackPackage']);
     });
-    $routes->post('jastip', [JastipController::class, 'addJastip']);
+    // buat route traking dengan parameter nomor resi
     $routes->resource('jastip', ['namespace' => '', 'controller' => JastipController::class, 'websafe' => 1]);
     $routes->post('user/activate', [UserController::class, 'activate']);
     $routes->post('user/deactivate', [UserController::class, 'deactivate']);

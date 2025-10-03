@@ -44,6 +44,14 @@ class Manage extends BaseController
         ]);
         return $this->view->render("pages/panel/admin/jastip");
     }
+    // tracking page
+    public function tracking(): string
+    {
+        $this->view->setData([
+            "page" => "tracking",
+        ]);
+        return $this->view->render("pages/panel/admin/tracking");
+    }
     public function pengajuan(): string
     {
         $this->view->setData([

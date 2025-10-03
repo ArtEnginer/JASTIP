@@ -9,19 +9,19 @@
     <div class="nav-item" data-page="dashboard">
         <a href="<?= base_url('panel') ?>" class="nav-link"><i class="material-icons">dashboard</i>Dashboard</a>
     </div>
-    <?php if (auth()->user()->inGroup('admin')) : ?>
-
-        <div class="nav-item" data-page="jastip">
-            <a href="<?= base_url('panel/jastip') ?>" class="nav-link"><i class="material-icons">shopping_cart</i>Kelola Titipan</a>
-        </div>
 
 
+    <div class="nav-item" data-page="jastip">
+        <a href="<?= base_url('panel/jastip') ?>" class="nav-link"><i class="material-icons">shopping_cart</i>Kelola Titipan</a>
+    </div>
 
-        <div class="nav-item" data-page="user">
-            <a href="<?= base_url('panel/user') ?>" class="nav-link"><i class="material-icons">person</i>Data
-                User</a>
-        </div>
-    <?php endif ?>
+
+
+    <div class="nav-item" data-page="user">
+        <a href="<?= base_url('panel/user') ?>" class="nav-link"><i class="material-icons">person</i>Data
+            User</a>
+    </div>
+
 
 
 
