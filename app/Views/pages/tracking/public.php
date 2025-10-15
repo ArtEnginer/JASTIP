@@ -371,6 +371,10 @@
                                 <div class="value" id="displayBobot">-</div>
                             </div>
                             <div class="info-item">
+                                <label>Estimasi Sampai</label>
+                                <div class="value text-info" id="displayEstimasi">-</div>
+                            </div>
+                            <div class="info-item">
                                 <label>Keterangan</label>
                                 <div class="value" id="displayKeterangan">-</div>
                             </div>
@@ -482,6 +486,7 @@
                 document.getElementById('displayBiaya').textContent = data.biaya ? `Rp ${formatNumber(data.biaya)}` : '-';
                 document.getElementById('displayAlamat').textContent = data.alamat_penerima || '-';
                 document.getElementById('displayBobot').textContent = data.bobot ? `${data.bobot} kg` : '-';
+                document.getElementById('displayEstimasi').textContent = data.estimasi_sampai ? formatDate(data.estimasi_sampai) : '-';
                 document.getElementById('displayKeterangan').textContent = data.keterangan || '-';
                 document.getElementById('displayCatatan').textContent = data.catatan || '-';
 
