@@ -10,28 +10,46 @@
         <a href="<?= base_url('panel') ?>" class="nav-link"><i class="material-icons">dashboard</i>Dashboard</a>
     </div>
 
-
-    <div class="nav-item" data-page="jastip">
-        <a href="<?= base_url('panel/jastip') ?>" class="nav-link"><i class="material-icons">shopping_cart</i>Kelola Titipan</a>
-    </div>
+    <?php if (auth()->user()->inGroup('superadmin')) : ?>
 
 
-
-    <div class="nav-item" data-page="user">
-        <a href="<?= base_url('panel/user') ?>" class="nav-link"><i class="material-icons">person</i>Data
-            User</a>
-    </div>
-
-
-
-
-
-    <?php if (auth()->user()->inGroup('user')) : ?>
-        <div class="nav-item" data-page="pengajuan">
-            <a href="<?= base_url('panel/pengajuan') ?>" class="nav-link"><i class="material-icons">assignment</i>Pengajuan Titipan</a>
+        <div class="nav-item" data-page="jastip">
+            <a href="<?= base_url('panel/jastip') ?>" class="nav-link"><i class="material-icons">shopping_cart</i>Kelola Titipan</a>
         </div>
-        <div class="nav-item" data-page="riwayat">
-            <a href="<?= base_url('panel/riwayat') ?>" class="nav-link"><i class="material-icons">assignment</i>Riwayat Titipan</a>
+
+        <!-- shipment -->
+        <div class="nav-item" data-page="shipment">
+            <a href="<?= base_url('panel/shipment') ?>" class="nav-link"><i class="material-icons">local_shipping</i>Kelola Pengiriman</a>
+        </div>
+
+        <div class="nav-item" data-page="user">
+            <a href="<?= base_url('panel/user') ?>" class="nav-link"><i class="material-icons">person</i>Data
+                User</a>
+        </div>
+
+
+        <div class="nav-item" data-page="pengaturan">
+            <a href="<?= base_url('panel/pengaturan') ?>" class="nav-link"><i class="material-icons">settings</i>Pengaturan</a>
+        </div>
+    <?php endif ?>
+
+
+
+    <?php if (auth()->user()->inGroup('gudang1')) : ?>
+        <div class="nav-item" data-page="jastip">
+            <a href="<?= base_url('panel/jastip') ?>" class="nav-link"><i class="material-icons">shopping_cart</i>Kelola Titipan</a>
+        </div>
+        <div class="nav-item" data-page="shipment">
+            <a href="<?= base_url('panel/shipment') ?>" class="nav-link"><i class="material-icons">local_shipping</i>Kelola Pengiriman</a>
+        </div>
+    <?php endif ?>
+
+    <?php if (auth()->user()->inGroup('gudang2')) : ?>
+        <div class="nav-item" data-page="jastip">
+            <a href="<?= base_url('panel/jastip') ?>" class="nav-link"><i class="material-icons">shopping_cart</i>Kelola Titipan</a>
+        </div>
+        <div class="nav-item" data-page="shipment">
+            <a href="<?= base_url('panel/shipment') ?>" class="nav-link"><i class="material-icons">local_shipping</i>Kelola Pengiriman</a>
         </div>
     <?php endif ?>
 

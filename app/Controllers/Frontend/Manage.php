@@ -52,23 +52,13 @@ class Manage extends BaseController
         ]);
         return $this->view->render("pages/panel/admin/tracking");
     }
-    public function pengajuan(): string
+
+    public function pengaturan(): string
     {
         $this->view->setData([
-            "page" => "pengajuan",
-
-
+            "page" => "pengaturan",
         ]);
-        return $this->view->render("pages/panel/admin/pengajuan");
-    }
-    public function riwayat(): string
-    {
-        $this->view->setData([
-            "page" => "riwayat",
-
-
-        ]);
-        return $this->view->render("pages/panel/admin/riwayat");
+        return $this->view->render("pages/panel/admin/pengaturan");
     }
 
     public function user(): string
@@ -77,5 +67,13 @@ class Manage extends BaseController
             "page" => "user",
         ]);
         return $this->view->render("pages/panel/admin/user");
+    }
+
+    public function shipment(): string
+    {
+        $this->view->setData([
+            "page" => "shipment",
+        ]);
+        return $this->view->render("pages/panel/admin/shipment");
     }
 }

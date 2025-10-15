@@ -21,6 +21,20 @@ class InitMigration extends Migration
             $table->timestamps();
         });
 
+        Eloquent::schema()->create("shipments", function (Blueprint $table) {
+            $table->id();
+            $table->string("nomor_kontainer", 100)->unique();
+            $table->string("nama_kontainer", 255)->nullable();
+            $table->dateTime("tanggal_pengiriman");
+            $table->dateTime("estimasi_sampai")->nullable();
+            $table->enum("status_pengiriman", ['Persiapan', 'Dalam Perjalanan', 'Sampai Tujuan', 'Selesai'])->default('Persiapan');
+            $table->integer("total_paket")->default(0);
+            $table->decimal("total_bobot", 10, 2)->default(0);
+            $table->text("keterangan")->nullable();
+            $table->timestamps();
+        });
+
+
         // table jasa titip barang
         Eloquent::schema()->create("jastip", function (Blueprint $table) {
             $table->id();
@@ -33,6 +47,12 @@ class InitMigration extends Migration
             $table->string("keterangan")->nullable();
             $table->string("catatan")->nullable();
             $table->string("status")->default('pending');
+            $table->dateTime("estimasi_sampai")->nullable();
+            $table->foreignId('shipment_id')
+                ->nullable()
+                ->constrained("shipments")
+                ->onUpdate('cascade')
+                ->onDelete('set null');
             $table->timestamps();
         });
 
@@ -44,6 +64,26 @@ class InitMigration extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string("status");
+            $table->timestamps();
+        });
+
+
+        Eloquent::schema()->create("shipment_details", function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('shipment_id')
+                ->constrained("shipments")
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('jastip_id')
+                ->constrained("jastip")
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->timestamps();
+        });
+
+        Eloquent::schema()->create("pengaturan", function (Blueprint $table) {
+            $table->id();
+            $table->string("nominal_per_kg")->nullable();
             $table->timestamps();
         });
     }

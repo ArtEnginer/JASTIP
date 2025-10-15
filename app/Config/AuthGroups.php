@@ -63,11 +63,11 @@ class AuthGroups extends ShieldAuthGroups
         ],
         'gudang1' => [
             'title'       => 'gudang 1',
-            'description' => 'Pengguna dengan akses ke gudang 1',
+            'description' => 'Pengguna dengan akses ke gudang 1 Jakarta',
         ],
         'gudang2' => [
             'title'       => 'gudang 2',
-            'description' => 'Pengguna dengan akses ke gudang 2',
+            'description' => 'Pengguna dengan akses ke gudang 2 Papua',
         ],
 
 

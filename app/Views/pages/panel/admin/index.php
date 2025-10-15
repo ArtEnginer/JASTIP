@@ -175,7 +175,136 @@
             transform: rotate(360deg);
         }
     }
+
+    .welcome-alert {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        max-width: 400px;
+        padding: 20px 25px;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        animation: slideIn 0.5s ease-out;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .welcome-alert.superadmin {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+
+    .welcome-alert.gudang1 {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+    }
+
+    .welcome-alert.gudang2 {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+    }
+
+    .welcome-alert-icon {
+        font-size: 32px;
+        flex-shrink: 0;
+    }
+
+    .welcome-alert-content h5 {
+        margin: 0 0 5px 0;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .welcome-alert-content p {
+        margin: 0;
+        font-size: 14px;
+        opacity: 0.95;
+    }
+
+    .welcome-alert-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        opacity: 0.8;
+        transition: opacity 0.3s;
+    }
+
+    .welcome-alert-close:hover {
+        opacity: 1;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        to {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+    }
 </style>
+
+<!-- Welcome Alert -->
+<?php
+$userGroup = '';
+$welcomeTitle = '';
+$welcomeMessage = '';
+$alertIcon = '';
+$alertClass = '';
+
+if (auth()->user()->inGroup('superadmin')) {
+    $userGroup = 'superadmin';
+    $welcomeTitle = 'Selamat Datang, Super Admin! 👑';
+    $welcomeMessage = 'Anda memiliki akses penuh ke semua fitur sistem JASTIP';
+    $alertIcon = '👑';
+    $alertClass = 'superadmin';
+} elseif (auth()->user()->inGroup('gudang1')) {
+    $userGroup = 'gudang1';
+    $welcomeTitle = 'Selamat Datang, Gudang Jakarta! 📦';
+    $welcomeMessage = 'Pantau dan kelola pengiriman dari Jakarta';
+    $alertIcon = '🏢';
+    $alertClass = 'gudang1';
+} elseif (auth()->user()->inGroup('gudang2')) {
+    $userGroup = 'gudang2';
+    $welcomeTitle = 'Selamat Datang, Gudang Papua! 🌴';
+    $welcomeMessage = 'Pantau dan kelola pengiriman dari Papua';
+    $alertIcon = '🏝️';
+    $alertClass = 'gudang2';
+}
+?>
+
+<?php if ($userGroup): ?>
+    <div class="welcome-alert <?= $alertClass ?>" id="welcomeAlert">
+        <div class="welcome-alert-icon"><?= $alertIcon ?></div>
+        <div class="welcome-alert-content">
+            <h5><?= $welcomeTitle ?></h5>
+            <p><?= $welcomeMessage ?></p>
+        </div>
+        <button class="welcome-alert-close" onclick="closeWelcomeAlert()">×</button>
+    </div>
+<?php endif; ?>
+
 <div class="page-wrapper">
     <div class="page">
         <div class="page-header">
@@ -285,6 +414,22 @@
     // Global variables for charts
     let statusChart, revenueChart, trendsChart, weightChart;
 
+    // Welcome Alert Functions
+    function closeWelcomeAlert() {
+        const alert = document.getElementById('welcomeAlert');
+        if (alert) {
+            alert.style.animation = 'slideOut 0.5s ease-out';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 500);
+        }
+    }
+
+    // Auto close welcome alert after 5 seconds
+    setTimeout(() => {
+        closeWelcomeAlert();
+    }, 5000);
+
     // Helper function to format currency
     function formatCurrency(amount) {
         return new Intl.NumberFormat('id-ID', {
@@ -301,6 +446,8 @@
 
     // Initialize dashboard
     $(document).ready(function() {
+
+
         loadDashboardData();
         setInterval(loadDashboardData, 30000); // Refresh every 30 seconds
     });

@@ -66,9 +66,9 @@
                         <div class="input-field col s12">
                             <select name="role" id="role" required>
                                 <option value="" disabled selected>Pilih Role</option>
-                                <option value="admin">ADMIN</option>
-                                <option value="pimpinan">Pimpinan</option>
-                                <option value="wisatawan">Wisatawan</option>
+                                <option value="superadmin">Super Admin</option>
+                                <option value="gudang1">Admin Jakarta</option>
+                                <option value="gudang2">Admin Papua</option>
                             </select>
                             <label>Role</label>
                         </div>
