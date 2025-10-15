@@ -57,17 +57,7 @@
                 Masuk Sekarang
             </button>
 
-            <div class="auth-links">
-                <p class="center">
-                    <a href="#!" class="orange-text text-darken-2">Lupa kata sandi?</a>
-                </p>
-                <p class="center">
-                    Belum punya akun?
-                    <a class="orange-text text-darken-2" href="<?= base_url('register') ?>">
-                        <strong>Daftar Sekarang</strong>
-                    </a>
-                </p>
-            </div>
+
         </form>
     </div>
 
