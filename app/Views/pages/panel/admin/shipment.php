@@ -49,13 +49,13 @@
         </div>
 
         <div class="input-field col s12 m6">
-            <input type="date" name="tanggal_pengiriman" id="add-tanggal_pengiriman" required>
-            <label for="add-tanggal_pengiriman">Tanggal Pengiriman</label>
+            <p>Tanggal Pengiriman</p>
+            <input type="datetime-local" name="tanggal_pengiriman" id="add-tanggal_pengiriman" required>
         </div>
 
         <div class="input-field col s12 m6">
-            <input type="date" name="estimasi_sampai" id="add-estimasi_sampai">
-            <label for="add-estimasi_sampai">Estimasi Sampai</label>
+            <p>Estimasi Sampai</p>
+            <input type="datetime-local" name="estimasi_sampai" id="add-estimasi_sampai">
         </div>
 
         <div class="input-field col s12">
@@ -92,13 +92,14 @@
         </div>
 
         <div class="input-field col s12 m6">
-            <input type="date" name="tanggal_pengiriman" id="edit-tanggal_pengiriman" required>
-            <label for="edit-tanggal_pengiriman">Tanggal Pengiriman</label>
+            <p>Tanggal Pengiriman</p>
+            <input type="datetime-local" name="tanggal_pengiriman" id="edit-tanggal_pengiriman" required>
+
         </div>
 
         <div class="input-field col s12 m6">
-            <input type="date" name="estimasi_sampai" id="edit-estimasi_sampai">
-            <label for="edit-estimasi_sampai">Estimasi Sampai</label>
+            <p>Estimasi Sampai</p>
+            <input type="datetime-local" name="estimasi_sampai" id="edit-estimasi_sampai">
         </div>
 
         <div class="input-field col s12">
@@ -203,10 +204,10 @@
             <label>Status Pengiriman</label>
         </div>
 
-        <div class="input-field col s12">
-            <input type="text" name="estimasi_sampai" id="process-estimasi_sampai">
+        <!-- <div class="input-field col s12">
+            <input type="date" name="estimasi_sampai" id="process-estimasi_sampai">
             <label for="process-estimasi_sampai">Update Estimasi Sampai</label>
-        </div>
+        </div> -->
 
         <div class="row">
             <div class="input-field col s12 center">
@@ -374,7 +375,7 @@
 
         const formData = {
             status: $("#process-status").val(),
-            estimasi_sampai: null
+            estimasi_sampai: $("#process-estimasi_sampai").val() || null
         };
         $.ajax({
             type: "POST",
@@ -444,13 +445,17 @@
 
                         if (data.tanggal_pengiriman) {
                             const tglKirim = new Date(data.tanggal_pengiriman);
-                            $("#edit-tanggal_pengiriman").val(tglKirim.toISOString().split('T')[0]);
+                            const offset = tglKirim.getTimezoneOffset();
+                            const localTime = new Date(tglKirim.getTime() - (offset * 60 * 1000));
+                            $("#edit-tanggal_pengiriman").val(localTime.toISOString().slice(0, 16));
                         } else {
                             $("#edit-tanggal_pengiriman").val("");
                         }
                         if (data.estimasi_sampai) {
-                            const tglSampai = new Date(data.estimasi_sampai);
-                            $("#edit-estimasi_sampai").val(tglSampai.toISOString().split('T')[0]);
+                            const tglEst = new Date(data.estimasi_sampai);
+                            const offset = tglEst.getTimezoneOffset();
+                            const localTime = new Date(tglEst.getTime() - (offset * 60 * 1000));
+                            $("#edit-estimasi_sampai").val(localTime.toISOString().slice(0, 16));
                         } else {
                             $("#edit-estimasi_sampai").val("");
                         }

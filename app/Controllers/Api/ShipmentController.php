@@ -100,8 +100,23 @@ class ShipmentController extends BaseApi
         $data = $this->request->getPost();
         unset($data['id']);
 
+        // Check if estimasi_sampai is being updated
+        $estimasiSampaiBaru = $this->request->getPost('estimasi_sampai');
+        $updateEstimasiJastip = false;
+
+        if ($estimasiSampaiBaru && $estimasiSampaiBaru != $shipment->estimasi_sampai) {
+            $updateEstimasiJastip = true;
+        }
+
         $shipment->fill($data);
         $shipment->save();
+
+        // Update estimasi_sampai for all packages in this shipment
+        if ($updateEstimasiJastip) {
+            JastipModel::where('shipment_id', $id)->update([
+                'estimasi_sampai' => $estimasiSampaiBaru
+            ]);
+        }
 
         return $this->respond([
             'messages' => [
